@@ -129,7 +129,7 @@ body {
 
 @font-face {
     font-family: 'Tsukuhoucustom';
-    src: url('font/TsukuhouShogoMin-OFL.otf') format('truetype');
+    src: url('../font/TsukuhouShogoMin-OFL.otf') format('truetype');
   }
 @font-face {
     font-family: 'Funnelsans';
@@ -856,3 +856,4 @@ body.fiche-mode #retourCarte {
   stroke-width: 0.1;
 
 }
+
