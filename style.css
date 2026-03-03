@@ -1,0 +1,857 @@
+  :root {
+  /* --- THÈME CLAIR (Par défaut) --- */
+  --background-color: #EEE6D8;
+  --text-color: #2b210f;
+  --text-secondary: #4b3a28;
+  --card-bg: #f5ebd9; /*TABLEAU DE STATS, CAPITALE, POPULATION. */
+  
+  /* Carte -- Prefectures -- Hover*/
+  --pref-fill: #7AA95C;
+  --pref-stroke: #f1fff6;
+
+  --pref-hover-fill: #537e26;
+  --pref-hover-stroke: #f1fff6;
+
+  --pref-selected-fill: #537e26;
+  --pref-selected-stroke: #f1fff6;
+
+  --hover-label-text: #2b210f;
+  --hover-label-background: #e7d9c49f;
+  
+  /* BOUTONS */
+  --btn-box-background: #EEE6D8;
+  --btn-box-shadow-1: 2px 6px 18px #0001;
+  
+  --btn-border: 1.5px solid #f5eee0;
+  --btn-background: #e7d9c4; 
+  --btn-texte: #aa8e5e;
+  --btn-box-shadow-2: 1px 2px 8px #2221;
+
+  --btn-active-background: #e9cea2;
+  --btn-active-texte: #aa8e5e;
+  --btn-active-border: #e7d5b2;
+  
+  --btn-hover: #e9cea2;
+
+/*RETOUR CARTE*/
+  --btn-retour-carte-cercle: #2b210f;
+  --btn-retour-carte-hover: #2b210f;
+  --btn-retour-border-arrow-left: #fff;
+  --btn-retour-border-arrow-bottom: #fff;
+  --btn-retour-carte-texte: #fff;
+  --btn-carte-retour-icon-arrow: #fff;
+
+/*DRAPEAU*/
+  --drapeau-box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  --drapeau-border: 1px solid #ddd;
+
+  /* Navbar */
+  --nav-background: #ffffffbd; 
+  --nav-box-shadow: 0px 4px 15px #0001, 2px 6px 18px #0001;
+ /* BARRE DE RECHERCHE */
+  --input-background: #dcdddc;
+  --input-color: #2b210f; /* Couleur du texte dans la barre de recherche */
+ /*TOOGLE SWITCH*/
+  --switch-background: linear-gradient(to right, #efefef 50%, #2a2a2a 50%) no-repeat;
+  --switch-border: 1px solid rgba(133, 133, 133, 0.479);
+  --switch-circle: linear-gradient(to right, #efefef 50%, #0A0E15 50%) no-repeat;
+  }
+
+/* --- THÈME SOMBRE --- */
+body.dark-theme {
+  --background-color: #0A0E15;
+  --text-color: #f5ebd9;
+  --text-secondary: #d4d6d4;
+  --card-bg: #2b2b2b; /*TABLEAU DE STATS, CAPITALE, POPULATION. */
+  
+  /* Carte -- Prefectures -- Hover*/
+  --pref-fill: #78A1E2;      
+  --pref-stroke: #ffffff;
+
+  --pref-hover-fill: #3d6db9;
+  --pref-hover-stroke: #ffffff;
+  
+  --pref-selected-fill: #3d6db9;
+  --pref-selected-stroke: #ffffff;
+
+  --hover-label-text: #203150;
+  --hover-label-background: #a9bbd6;
+
+  /* BOUTONS */
+  --btn-box-background: #222D41;
+  --btn-box-shadow-1: 1px 1px 10px #fdfcfc2d;
+
+  --btn-border: 1.5px solid #9b9b9b;
+  --btn-background: #374158;
+  --btn-texte: #f5ebd9;
+  --btn-box-shadow-2: 1px 2px 8px #fdfcfc2d;
+
+  --btn-active-background: #888888;
+  --btn-active-texte: #f5ebd9;
+  --btn-active-border: #888;
+  
+  --btn-hover: #888888;
+
+  /*RETOUR CARTE*/
+  --btn-retour-carte-cercle: #f5ebd9;
+  --btn-retour-carte-hover: #f5ebd9;
+  --btn-retour-border-arrow-left: #0A0E15;
+  --btn-retour-border-arrow-bottom: #0A0E15;
+  --btn-retour-carte-texte: #0A0E15;
+  --btn-carte-retour-icon-arrow: #0A0E15;
+
+/*DRAPEAU*/
+  --drapeau-box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  --drapeau-border: 1px solid #ddd;
+
+  /* Navbar */
+  --nav-background: #2b2b2b;
+  --nav-box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+ /* BARRE DE RECHERCHE */
+  --input-background: #3d3d3d;
+  --input-color: #fff;
+}
+
+
+body {
+
+  min-height: 100vh;
+  margin: 0;
+  background: var(--background-color);
+  color: var(--text-color);
+  transition: background 0.3s ease, color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+@font-face {
+    font-family: 'Tsukuhoucustom';
+    src: url('../font/TsukuhouShogoMin-OFL.otf') format('truetype');
+  }
+@font-face {
+    font-family: 'Funnelsans';
+    src: url('../font/Funnelsans.ttf') format('regular');
+  }
+
+.carte-container {
+  position: absolute;
+  top: 0;
+  left: 3%;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translate(0, 0) scale(1);
+  transform-origin: top right;
+  transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1); /* Légèrement plus lent pour la douceur */
+  z-index: 10;
+  pointer-events: none; 
+}
+
+.carte-container.minimized {
+  position: absolute;
+  transform: translate(17vw, 0vh) scale(0.7); /* ← fluide ET ajustable */
+  z-index: 1;
+}
+
+
+svg {
+  width: auto;
+  height: 96vh; /* ou une valeur ajustable */
+  max-width: 100%;
+  overflow: hidden;
+  pointer-events: auto !important;
+  rotate: 2deg; /* Fix pour les problèmes de pointer-events sur les SVG */
+}
+
+/* Boîtes des boutons */
+.boutons-iles,
+.boutons-regions {
+position: absolute;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 50;
+  background: var(--btn-box-background);
+  border-radius: 16px;
+  box-shadow: var(--btn-box-shadow-1);
+  padding: 10px;
+  pointer-events: auto;
+}
+
+.boutons-iles  { top: 30px; }
+.boutons-regions { top: 350px; }
+
+.big-btn, .region-btn {
+  font-family: 'Funnelsans', sans-serif;
+  margin: 3px 0;
+  border-radius: 10px;
+  border: var(--btn-border);
+  background: var(--btn-background);
+  font-weight: 600;
+  color: var(--btn-texte);
+  font-size: 1.06em;
+  padding: 0.4em 1.3em;
+  cursor: pointer;
+  transition: 
+        transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), 
+        background-color 0.3s ease,
+        box-shadow 0.3s ease,
+        opacity 0.4s ease !important;
+    backface-visibility: hidden;
+  box-shadow: var(--btn-box-shadow-2);
+}
+.big-btn.active, .region-btn.active {
+  background: var(--btn-active-background);
+  color: var(--btn-active-texte);
+  border-color: var(--btn-active-border);
+  transform: translateY(-1px) scale(0.98);
+}
+.big-btn:active, .region-btn:active { transform: scale(0.97); }
+.big-btn:hover, .region-btn:hover { 
+  background: var(--btn-hover);
+    transform: translateY(-3px) scale(1.02); /* Soulèvement */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15); /* Ombre plus profonde */
+}
+
+
+.boutons-iles-title {
+  font-size: 1.13em;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+  text-align: left;
+  padding-left: 2px;
+}
+
+/* prefectures de base */
+.prefecture {
+  fill: var(--pref-fill) !important;
+  stroke: var(--pref-stroke) !important;
+  stroke-width: 0.5 !important;
+  cursor: pointer;
+  transition: fill 0.22s, stroke 0.22s;
+  vector-effect: non-scaling-stroke;      /* ← Ajouté ici */
+  pointer-events: visiblePainted;
+}
+
+/* --- 1. HOVER SUR prefecture NORMALE (Vert par défaut, modifiable) --- */
+.prefecture:hover,
+.prefecture.illumine {
+  fill: var(--pref-hover-fill) !important;      
+  stroke: var(--pref-hover-stroke) !important;     
+  stroke-width: 0.5 !important; 
+}
+
+/* Couleur de la prefecture sélectionnée quand on ouvre sa fiche */
+.prefecture.active-prefecture {
+  fill: var(--pref-selected-fill) !important; /* Le vert foncé identique au survol */
+  stroke: var(--pref-selected-stroke) !important;
+  stroke-width: 0.831188 !important;
+}
+
+
+/* --- 2. HOVER SUR UNE ÎLE SÉLECTIONNÉE (Rouge) --- */
+/* On assombrit le fond et on met le contour en rouge foncé comme demandé */
+.prefecture.superile-highlight:hover {
+  fill: #b03030 !important;       /* Rouge plus sombre pour le fond */
+  stroke: #580202 !important;     /* ROUGE FONCÉ pour le contour */
+  stroke-width: 0.831188 !important; 
+}
+
+/* --- 3. HOVER SUR LES RÉGIONS (Exemples à personnaliser) --- */
+
+/* Hover pour le Tohoku (Bleu) */
+.prefecture.selected[data-region="Tōhoku"].illumine,
+.prefecture.selected[data-region="Tōhoku"]:hover {
+  fill: #6775f8 !important;       /* Bleu plus sombre */
+  stroke: #364192 !important;
+  stroke-width: 0.831188 !important;
+}
+
+/* Hover pour le Kantō (Bleu) */
+.prefecture.selected[data-region="Kantō"].illumine,
+.prefecture.selected[data-region="Kantō"]:hover {
+  fill: #445fb9 !important;       /* Bleu plus sombre */
+  stroke: #1045a8 !important;
+  stroke-width: 0.831188 !important;
+}
+
+/* Hover pour le Chubu (Bleu) */
+.prefecture.selected[data-region="Chūbu"].illumine,
+.prefecture.selected[data-region="Chūbu"]:hover {
+  fill: #d57a1a !important;       /* Bleu plus sombre */
+  stroke: #855103 !important;
+  stroke-width: 0.831188 !important;
+}
+
+/* Hover pour le Kansai (Rose/Rouge) */
+.prefecture.selected[data-region="Kansai"].illumine,
+.prefecture.selected[data-region="Kansai"]:hover {
+  fill: #920427 !important;       /* Rose/Rouge plus sombre */
+  stroke: #8d2033 !important;
+  stroke-width: 0.831188 !important;
+}
+
+/* Hover pour le Chugoku (Rose/Rouge) */
+.prefecture.selected[data-region="Chūgoku"].illumine,
+.prefecture.selected[data-region="Chūgoku"]:hover {
+  fill: #188ea3 !important;       /* Rose/Rouge plus sombre */
+  stroke: #055872 !important;
+  stroke-width: 0.831188 !important;
+}
+
+/* Hover pour le shikoku (Rose/Rouge) */
+.prefecture.selected[data-region="Shikoku"].illumine,
+.prefecture.selected[data-region="Shikoku"]:hover {
+  fill: #e7ca48 !important;       /* Rose/Rouge plus sombre */
+  stroke: #9e7a0c !important;
+  stroke-width: 0.831188 !important;
+}
+
+/* Hover pour le kyushu (Rose/Rouge) */
+.prefecture.selected[data-region="Kyūshū"].illumine,
+.prefecture.selected[data-region="Kyūshū"]:hover {
+  fill: #b428ca !important;       /* Rose/Rouge plus sombre */
+  stroke: #a13ba1 !important;
+  stroke-width: 0.831188 !important;
+}
+
+.prefecture.superile-highlight {
+    fill: #d34a4a !important;
+    stroke: #8A2020 !important;
+}
+
+
+/* Nom de prefecture Hover */
+#prefecture-hover-label {
+  font-family: 'Tsukuhoucustom', serif;
+  position: fixed;
+  bottom: 30px;
+  left: 49%;
+  transform: translateX(-50%);
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: var(--hover-label-text);
+  background-color: var(--hover-label-background);
+  padding: 10px 20px; /* Haut-Bas / Droite-Gauche */
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: 1005;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Couleurs régionales */
+
+.prefecture.selected[data-region="Kantō"]    { fill: #3b82f6 !important; stroke: #174497 !important; }
+.prefecture.selected[data-region="Kansai"]   { fill: #f43f5e !important; stroke: #8d2033 !important; }
+.prefecture.selected[data-region="Chūbu"]    { fill: #f59e42 !important; stroke: #8a5500 !important; }
+.prefecture.selected[data-region="Tōhoku"]   { fill: #818cf8 !important; stroke: #364192 !important; }
+.prefecture.selected[data-region="Chūgoku"]  { fill: #06b6d4 !important; stroke: #055872 !important; }
+.prefecture.selected[data-region="Shikoku"]  { fill: #ffe155 !important; stroke: #9e7a0c !important; }
+.prefecture.selected[data-region="Kyūshū"]   { fill: #e879f9 !important; stroke: #a13ba1 !important; }
+
+body.fiche-mode .prefecture {
+  cursor: default !important;
+  pointer-events: none;
+}
+
+body.fiche-mode .prefecture,
+body.fiche-mode .prefecture-annexe {
+  stroke-width: 0.45;
+} 
+
+body.fiche-mode {
+    overflow-y: auto !important; /* Permet de descendre */
+    height: auto !important;
+}
+/* Masquer la barre de défilement pour Chrome, Safari et Opera */
+html, body {
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
+    /* --- AJOUTE CES DEUX LIGNES --- */
+    overflow-x: hidden;    /* Interdit le décalage gauche/droite */
+    width: 100%;           /* Force la largeur à 100% de l'écran */
+}
+
+/* Garde ton code pour masquer la barre */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+
+@keyframes slideUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+body.fiche-mode #ficheTitre,
+body.fiche-mode #prefecture-drapeau,
+body.fiche-mode .stats-grid,
+body.fiche-mode #ficheTexte,
+body.fiche-mode #svgPortrait,
+body.fiche-mode #pref-portrait-container {
+  opacity: 0;
+  animation: slideUp 0.6s ease forwards;
+}
+
+body.fiche-mode #ficheTitre {
+  animation-delay: 0.1s;
+}
+
+body.fiche-mode #prefecture-drapeau {
+  animation-delay: 0.1s;
+}
+
+/* La grille de stats apparaît juste après */
+body.fiche-mode .stats-grid {
+  animation-delay: 0.3s;
+}
+
+/* Le long texte de description apparaît en dernier */
+body.fiche-mode #ficheTexte {
+  animation-delay: 0.4s;
+}
+
+body.fiche-mode #pref-portrait-container{
+  animation-delay: 0.5s;
+}
+
+body.fiche-mode #svgPortrait {
+  animation-delay: 0.6s;
+}
+
+.navbar, .boutons-iles, .boutons-regions {
+    transition: 
+        transform 0.6s cubic-bezier(0.19, 1, 0.22, 1), 
+        opacity 0.9s ease;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+body.fiche-mode .navbar {
+    transform: translate(-50%, -100px); /* Monte au dessus de l'écran */
+    opacity: 0;
+    pointer-events: none;
+}
+
+body.fiche-mode .boutons-iles, 
+body.fiche-mode .boutons-regions {
+    transform: translateX(100px); /* Glisse vers la droite */
+    opacity: 0;
+    pointer-events: none;
+}
+
+#ficheDetail {
+  position: relative;
+  width: 100%;
+  max-width: 650px;
+  min-height: 100vh;
+  /* Aligné à gauche avec un padding propre */
+  margin: 0 auto 0 0; 
+  padding: 40px 20px 60px 80px;
+  padding-bottom: 100px;
+  opacity: 0;
+  display: none;
+  z-index: 50;
+  pointer-events: none;
+  text-align: left; /* Force l'alignement à gauche */
+  transition: opacity 0.4 ease;
+}
+
+body.fiche-mode #ficheDetail {
+  display: block;
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  }
+
+  #ficheDetail h1 {
+    font-family: 'Tsukuhoucustom', serif;
+    font-size: 6rem;
+    margin-top: 50px;
+    text-align: left;
+    color: var(--text-color);
+    letter-spacing: 1px;
+    white-space: nowrap;
+    flex-shrink: 1;
+    
+  }
+  #ficheDetail p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    line-height: 1.7em;   
+  }
+
+.navigation-fiche {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+
+/* Alignement Titre + Drapeau sur la même ligne */
+#entete-container {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important; 
+  justify-content: flex-start !important;
+  gap: 20px !important;
+  margin-bottom: 20px !important;
+  width: 100% !important;
+  flex-wrap: nowrap !important; /* Interdit de passer à la ligne */
+}
+
+#prefecture-drapeau {
+  height: 75px !important;
+  width: auto !important;
+  flex-shrink: 0 !important; /* INTERDIT au drapeau de rétrécir ou disparaître */
+  display: none; /* Géré par le JS */
+  border-radius: 4px;
+  box-shadow:  var(--drapeau-box-shadow);
+  border: var(--drapeau-border);
+}
+
+/* BOUTON RETOUR */
+#retourCarte {
+ position: relative;
+ display: inline-block;
+ cursor: pointer;
+ outline: none;
+ border: 0;
+ vertical-align: middle;
+ text-decoration: none;
+ background: transparent;
+ padding: 0;
+ font-family: inherit;
+ width: 10rem;
+ height: auto;
+ margin-bottom: 20px;
+}
+
+#retourCarte .circle {
+ transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+ position: relative;
+ display: block;
+ margin: 0;
+ width: 3rem;
+ height: 3rem;
+ background: var(--btn-retour-carte-cercle);
+ border-radius: 1.625rem;
+}
+
+#retourCarte .circle .icon {
+ transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+ position: absolute;
+ top: 0;
+ bottom: 0;
+ margin: auto;
+ background: var(--btn-carte-retour-icon-arrow);
+}
+
+/* On configure la flèche pour pointer vers la GAUCHE */
+#retourCarte .circle .icon.arrow {
+ left: 1.2rem;
+ width: 1.125rem;
+ height: 0.125rem;
+ background: none;
+}
+
+#retourCarte .circle .icon.arrow::before {
+ position: absolute;
+ content: "";
+ top: -0.29rem;
+ left: 0.0625rem;
+ width: 0.625rem;
+ height: 0.625rem;
+ border-bottom: 0.125rem solid var(--btn-retour-border-arrow-bottom); /* Inversion pour pointer à gauche */
+ border-left: 0.125rem solid var(--btn-retour-border-arrow-left);    /* Inversion pour pointer à gauche */
+ transform: rotate(45deg);
+}
+
+#retourCarte .button-text {
+ transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+ position: absolute;
+ top: 0;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ padding: 0.75rem 0;
+ margin: 0 0 0 1.85rem;
+ color: var(--btn-retour-carte-texte);
+ font-weight: 700;
+ line-height: 1.6;
+ text-align: center;
+ text-transform: uppercase;
+ font-size: 0.9rem;
+/* --- CACHÉ PAR DÉFAUT --- */
+ opacity: 0;
+ transform: translateX(10px); /* Petit décalage pour l'effet d'apparition */
+}
+
+/* Hover Effects */
+#retourCarte:hover .circle {
+ width: 100%;
+ background: var(--btn-retour-carte-hover);
+}
+
+#retourCarte:hover .circle .icon.arrow {
+ background: var(--btn-carte-retour-icon-arrow);
+ transform: translate(-0.5rem, 0); /* La flèche bouge vers la gauche */
+}
+
+#retourCarte:hover .button-text {
+ opacity: 1; /* Affiche le texte */
+ transform: translateX(0); /* Remet le texte à sa place */
+ color: var(--btn-retour-carte-texte);
+ transition-delay: 0.1s; /* Petit délai pour laisser le cercle s'ouvrir d'abord */
+}
+
+
+/* STATISTIQUES */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin: 30px 0;
+  padding: 20px;
+  background: var(--card-bg); /* Utilise ta variable de fond de carte */
+  border-radius: 15px;
+  border: 1px solid var(--btn-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Bloc individuel (Capitale ou Population) */
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Label (le petit texte au-dessus) */
+.stat-label {
+  font-family: 'Funnelsans', sans-serif;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+/* Valeur (le texte important) */
+.stat-value {
+  font-family: 'Funnelsans', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-color);
+  transition: color 0.3s ease;
+}
+
+
+
+
+
+/*  BARRE DE RECHERCHE */
+.navbar {
+  position: fixed;
+  top: 20px;
+  left: 51%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  
+  /* On reprend le style de ta box de recherche pour l'étendre à la navbar */
+  background-color: var(--nav-background);
+  padding: 10px 20px;
+  border-radius: 40px;
+  box-shadow: var(--nav-box-shadow);
+  opacity: 1;
+}
+
+/* --- TON DESIGN DE RECHERCHE CONSERVÉ --- */
+.group {
+  display: flex;
+  line-height: 28px;
+  align-items: center;
+  position: relative;
+  max-width: 190px; /* Largeur d'origine */
+}
+
+.input {
+  height: 40px;
+  line-height: 28px;
+  padding: 0 1rem;
+  width: 100%;
+  padding-left: 2.5rem;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  outline: none;
+  background-color: var(--input-background);
+  color: var(--input-color);
+  /* On a déplacé le halo sur la navbar, mais on peut garder une transition douce ici */
+  transition: .3s ease;
+}
+
+.input::placeholder { color: #777; }
+.icon { position: absolute; left: 1rem; fill: #777; width: 1rem; height: 1rem; }
+
+/* --- NIGHT MODE COLORS --- */
+body.dark-theme .navbar {
+  background-color: var(--nav-background);
+  box-shadow: var(--nav-box-shadow);
+}
+
+body.dark-theme .input {
+  background-color: var(--input-background);
+  color: var(--input-color);
+}
+
+/* --- DESIGN DU SWITCH --- */
+.theme-checkbox {
+  --toggle-size: 10px; /* Ajusté pour la navbar */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 6.25em;
+  height: 3.125em;
+  background: var(--switch-background);
+  background-size: 205%;
+  background-position: 0;
+  transition: 0.4s;
+  border-radius: 99em;
+  position: relative;
+  cursor: pointer;
+  font-size: var(--toggle-size);
+  flex-shrink: 0; /* Empêche le bouton de s'écraser */
+  border: var(--switch-border);
+}
+
+.theme-checkbox::before {
+  content: "";
+  width: 2.25em;
+  height: 2.25em;
+  position: absolute;
+  top: 0.438em;
+  left: 0.438em;
+  background: var(--switch-circle);
+  background-size: 205%;
+  background-position: 100%;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+.theme-checkbox:checked::before {
+  left: calc(100% - 2.25em - 0.438em);
+  background-position: 0;
+}
+
+.theme-checkbox:checked {
+  background-position: 100%;
+  border-color: rgba(255,255,255,0.2);
+}
+
+
+/* Conteneur principal du compteur */
+.slot-machine {
+  display: inline-flex;
+  overflow: hidden; /* Cache les chiffres qui tournent en haut et en bas */
+  line-height: 1.5rem;
+  height: 1.5rem;   /* Doit correspondre à la taille de ta police */
+  font-variant-numeric: tabular-nums;
+}
+
+/* Une colonne de chiffres (0-9) */
+.slot-column {
+  display: flex;
+  flex-direction: column;
+  transition: transform 1.2s cubic-bezier(0.45, 0.05, 0.55, 0.95); /* Effet fluide */
+}
+
+.slot-digit {
+  height: 1.5rem; /* Même hauteur que le conteneur */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Espace entre les groupes de chiffres */
+.slot-separator {
+  margin: 0 2px;
+}
+
+/* Animation de chute depuis le haut */
+@keyframes dropFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px); /* Commence 50px plus à gauche */
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);    /* Arrive à sa position normale */
+  }
+}
+
+/* On applique l'animation au bouton retour uniquement en mode fiche */
+body.fiche-mode #retourCarte {
+  animation: dropFromLeft 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+#pref-portrait-container {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+
+  display: flex;
+  justify-content: center; /* Centre horizontalement */
+  align-items: center;
+  /* On crée l'effet "plus bas quand on scroll" */
+  margin-top: 150px;  /* Espace après le texte */
+  margin-bottom: 100px; 
+  
+  background: transparent; /* On enlève le fond */
+  border: none;            /* On enlève la bordure */
+}
+
+#svgPortrait {
+  width: 100%;
+  height: 600px;
+  max-width: 500px;;
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+}
+
+.portrait-shape {
+  fill: var(--pref-fill) !important;
+  stroke: var(--pref-stroke) !important;
+  transition: fill 0.3s ease;
+}
+
+/* On s'assure que les points des villes soient visibles */
+.city-marker {
+  fill: #ff4757;
+  stroke: white;
+  stroke-width: 0.1;
+}
