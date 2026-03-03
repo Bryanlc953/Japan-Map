@@ -1,26 +1,7 @@
 ============================================================
-ENGLISH VERSION (VERSION ANGLAISE)
-============================================================
-COPYRIGHT © 2026 [Bryan LUCAS] - ALL RIGHTS RESERVED.
-
-1. OWNERSHIP:
-All source code (HTML, CSS, JavaScript), animations, structure, and visual design contained in this repository are the exclusive property of the author.
-
-2. RESTRICTIONS:
-- Commercial Use: It is strictly prohibited to copy, sell, rent, or use this code for commercial or profit-making purposes without prior written authorization.
-- Redistribution: You may not republish this code on another GitHub account, website, or platform while claiming authorship.
-- Modification: Any modification of the code for public distribution is prohibited.
-
-3. THIRD-PARTY ELEMENTS:
-External graphic resources (such as heart SVGs) used in this project remain the property of their respective authors and are subject to their own terms of use.
-
-4. CONTACT:
-For any acquisition of rights, commercial licensing, or partnership inquiries, please contact the author via their GitHub profile.
-
-============================================================
 VERSION FRANÇAISE (FRENCH VERSION)
 ============================================================
-DROITS D'AUTEUR © 2026 [Bryan LUCAS] - TOUS DROITS RÉSERVÉS.
+DROITS D'AUTEUR © 2026 BRYAN LUCAS - TOUS DROITS RÉSERVÉS.
 
 1. PROPRIÉTÉ :
 Tout le code source (HTML, CSS, JavaScript), les animations, la structure et le design visuel contenus dans ce dépôt sont la propriété exclusive de l'auteur.
@@ -28,11 +9,31 @@ Tout le code source (HTML, CSS, JavaScript), les animations, la structure et le 
 2. RESTRICTIONS :
 - Usage Commercial : Il est strictement interdit de copier, vendre, louer ou utiliser ce code à des fins commerciales ou lucratives sans autorisation écrite préalable.
 - Redistribution : Il est interdit de republier ce code sur un autre compte GitHub, site web ou plateforme de partage en s'en attribuant la paternité.
-- Modification : Toute modification du code à des fins de diffusion publique est interdite.
 
-3. ÉLÉMENTS TIERS :
-Les ressources graphiques externes (comme les fichiers SVG de cœurs) utilisées dans ce projet restent la propriété de leurs auteurs respectifs et sont soumises à leurs propres conditions d'utilisation ("Common Files"). 
-Leur présence ici ne diminue en rien les droits de l'auteur sur la logique, les animations et l'agencement global du site.
+3. ÉLÉMENTS TIERS (ATTRIBUTION) :
+Ce projet utilise la ressource graphique "Provinces of Japan.svg" créée par Ash_Crow, diffusée sous licence Creative Commons Attribution 2.5 Générique (CC BY 2.5).
+- Source originale : https://commons.wikimedia.org/wiki/File:Provinces_of_Japan.svg
+- L'utilisation de cette ressource respecte les conditions de citation de l'auteur et n'entraîne aucune cession de droits sur le code source original et le concept global du site, qui restent la propriété exclusive de Bryan LUCAS.
 
 4. CONTACT :
 Pour toute demande d'acquisition de droits ou de partenariat, veuillez contacter l'auteur via son profil GitHub.
+
+============================================================
+ENGLISH VERSION (VERSION ANGLAISE)
+============================================================
+COPYRIGHT © 2026 BRYAN LUCAS - ALL RIGHTS RESERVED.
+
+1. OWNERSHIP:
+All source code (HTML, CSS, JavaScript), animations, structure, and visual design contained in this repository are the exclusive property of the author.
+
+2. RESTRICTIONS:
+- Commercial Use: It is strictly prohibited to copy, sell, rent, or use this code for commercial or profit-making purposes without prior written authorization.
+- Redistribution: You may not republish this code on another GitHub account, website, or platform while claiming authorship.
+
+3. THIRD-PARTY ELEMENTS (ATTRIBUTION):
+This project uses the graphic resource "Provinces of Japan.svg" created by Ash_Crow, released under the Creative Commons Attribution 2.5 Generic (CC BY 2.5) license.
+- Original Source: https://commons.wikimedia.org/wiki/File:Provinces_of_Japan.svg
+- The use of this resource follows the author's attribution requirements and does not imply any transfer of rights regarding the original source code and the overall concept of the site, which remain the exclusive property of Bryan LUCAS.
+
+4. CONTACT :
+For any acquisition of rights, commercial licensing, or partnership inquiries, please contact the author via their GitHub profile.
