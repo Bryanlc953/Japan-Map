@@ -44,7 +44,7 @@ function ouvrirFiche(prefectureId) {
 
   // 5. Gestion du drapeau
   if (imgDrapeau) {
-    imgDrapeau.src = `../drapeaux/${prefectureId}.svg`;
+    imgDrapeau.src = `../flags/${prefectureId}.svg`;
     imgDrapeau.style.display = "block";
     imgDrapeau.onerror = function() { this.style.display = "none"; };
   }
@@ -290,4 +290,5 @@ function animerCompteur(element, valeurFinale) {
   unit.style.marginLeft = "8px";
   unit.textContent = " hab";
   element.appendChild(unit);
+
 }
