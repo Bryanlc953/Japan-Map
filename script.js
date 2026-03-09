@@ -41,7 +41,7 @@ function ouvrirFiche(prefectureId) {
   document.getElementById('fichePop').textContent = info.population || "N/A";
 
   const imgDrapeau = document.getElementById('prefecture-drapeau');
-  imgDrapeau.src = `../drapeaux/${prefectureId}.svg`;
+  imgDrapeau.src = `flags/${prefectureId}.svg`;
   imgDrapeau.style.display = "block";
 
   // Navigation
@@ -290,3 +290,4 @@ document.addEventListener('click', (e) => {
     searchSuggestions.classList.remove('active');
   }
 });
+
