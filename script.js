@@ -4,8 +4,8 @@
 const carteContainer    = document.getElementById('carteContainer');
 const ficheDetail       = document.getElementById('ficheDetail');
 const searchInput       = document.getElementById('searchPrefecture');
-const okinawaLayer      = document.getElementById('okinawaLayer');
-const btnOkinawa        = document.querySelector('[data-super-ile-btn="Ryūkyū"]');
+const ryūkyūLayer      = document.getElementById('ryūkyūLayer');
+const btnRyūkyū        = document.querySelector('[data-super-ile-btn="Ryūkyū"]');
 const hoverLabel        = document.getElementById('prefecture-hover-label');
 const searchSuggestions = document.getElementById('search-suggestions');
 const navFiche          = document.querySelector('.fiche-navbar');
@@ -13,14 +13,13 @@ const btnPrev           = document.getElementById('fiche-prev');
 const btnNext           = document.getElementById('fiche-next');
 
 const ordrePrefectures = Object.keys(prefecture_INFOS);
-let indexActuel = null;
+let indexActuel    = null;
 let indexSuggestion = -1;
 
 // =========================================================
 //   UTILITAIRES
 // =========================================================
 
-/** Active/désactive le mode fiche sur le body. */
 function setFicheMode(actif, modeRegion = false) {
   document.body.classList.toggle('fiche-mode', actif);
   document.body.classList.toggle('region-active-mode', actif && modeRegion);
@@ -29,18 +28,15 @@ function setFicheMode(actif, modeRegion = false) {
   document.body.style.overflowY             = actif ? 'auto' : '';
 }
 
-/** Remet la carte dans son état initial (aucune sélection). */
 function nettoyerTouteLaCarte() {
+  // Pas de protection deselecting — on nettoie tout sans condition
   document.querySelectorAll('.prefecture').forEach(p => {
-    // On préserve "deselecting" si l'animation est en cours
-    if (!p.classList.contains('deselecting')) {
-      p.classList.remove('selected', 'superile-highlight', 'illumine', 'active-prefecture');
-    }
+    p.classList.remove('selected', 'superile-highlight', 'illumine', 'active-prefecture', 'deselecting');
   });
   document.querySelectorAll('.big-btn, .region-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.region-svg-group').forEach(g => g.classList.remove('is-active-region'));
-  carteContainer.classList.remove('okinawa-zoom');
-  okinawaLayer.classList.remove('okinawa-visible');
+  carteContainer.classList.remove('ryūkyū-zoom');
+  // Ryūkyū reste toujours visible
 }
 
 // =========================================================
@@ -58,7 +54,7 @@ function ouvrirFiche(prefectureId) {
   document.querySelectorAll(`.prefecture[data-prefecture="${prefectureId}"]`)
     .forEach(p => p.classList.add('active-prefecture'));
 
-  // Remplir les champs de la fiche
+  // Remplir les champs
   document.getElementById('ficheTitre').textContent = `${info.kanji} — ${info.romaji}`;
   document.getElementById('ficheTexte').textContent = info.desc;
 
@@ -69,23 +65,34 @@ function ouvrirFiche(prefectureId) {
   }
   document.getElementById('fichePop').textContent = info.population || 'N/A';
 
+  // Villes principales
+  const villesListe = document.getElementById('ficheVilles');
+  const villesBloc  = document.getElementById('ficheVillesBloc');
+  if (villesListe) {
+    if (info.villes?.length) {
+      villesListe.innerHTML = info.villes.map(v => `<li class="ville-item">${v}</li>`).join('');
+      if (villesBloc) villesBloc.style.display = 'block';
+    } else {
+      villesListe.innerHTML = '';
+      if (villesBloc) villesBloc.style.display = 'none';
+    }
+  }
+
   const stats = document.querySelector('.stats-grid');
   if (stats) stats.style.display = 'grid';
 
   const imgDrapeau = document.getElementById('prefecture-drapeau');
-  imgDrapeau.src = `../drapeaux/${prefectureId}.svg`;
+  imgDrapeau.src = `flags/${prefectureId}.svg`;
   imgDrapeau.style.display = 'block';
 
-  // Navigation
+  // Compteur navigation
   document.getElementById('compteur-actuel').textContent = indexActuel + 1;
   document.getElementById('compteur-total').textContent  = ordrePrefectures.length;
   btnPrev.disabled = indexActuel === 0;
   btnNext.disabled = indexActuel === ordrePrefectures.length - 1;
 
-  // Passer en mode fiche
   setFicheMode(true);
   carteContainer.classList.add('minimized');
-  okinawaLayer.classList.add('okinawa-visible');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -114,26 +121,25 @@ function remplirFicheRegion(idRegion) {
   const elemPop = document.getElementById('fichePop');
   if (elemPop) elemPop.textContent = info.pop;
 
+  // Pas de villes ni drapeau en mode région
+  const villesBloc = document.getElementById('ficheVillesBloc');
+  if (villesBloc) villesBloc.style.display = 'none';
+
   const drapeau = document.querySelector('#prefecture-drapeau');
   if (drapeau) drapeau.style.display = 'none';
 
-  // Activer le bon bouton dans la barre haute
   document.querySelectorAll('.top-region-btn').forEach(b => {
     b.classList.toggle('active', b.getAttribute('data-target-region') === idRegion);
   });
 
   setFicheMode(true, true);
   carteContainer.classList.add('minimized');
-  okinawaLayer.classList.add('okinawa-visible');
 }
 
-/** Active une région : remplit la fiche + colorie les préfectures sur la carte. */
 function activerRegion(idRegion) {
-  const group = document.getElementById(idRegion) || document.querySelector(`.region-svg-group[data-region-romaji="${idRegion}"]`);
-  if (!group) {
-    console.error('Région SVG introuvable :', idRegion);
-    return;
-  }
+  const group = document.getElementById(idRegion)
+    || document.querySelector(`.region-svg-group[data-region-romaji="${idRegion}"]`);
+  if (!group) { console.error('Région SVG introuvable :', idRegion); return; }
 
   const regionNom = group.getAttribute('data-region-romaji') || idRegion;
   const cleanNom  = regionNom.replace('region-', '');
@@ -144,18 +150,17 @@ function activerRegion(idRegion) {
   document.querySelectorAll(`.prefecture[data-region="${cleanNom}"]`)
     .forEach(p => p.classList.add('selected'));
 
-  // Synchroniser le bouton du dock de droite
   const dockBtn = document.querySelector(`.region-btn[data-region-btn="${cleanNom}"]`);
   if (dockBtn) dockBtn.classList.add('active');
 }
 
 // =========================================================
-//   NAVIGATION ENTRE FICHES
+//   NAVIGATION ENTRE FICHES (avec animation villes)
 // =========================================================
 
 function transitionVersFiche(nouvelIndex) {
   const elementsAAnimer = document.querySelectorAll(
-    '#ficheTitre, #prefecture-drapeau, .stats-grid, #ficheTexte, #pref-portrait-container'
+    '#ficheTitre, #prefecture-drapeau, .stats-grid, #ficheTexte, #pref-portrait-container, #ficheVillesBloc'
   );
 
   btnPrev.style.pointerEvents = 'none';
@@ -191,9 +196,9 @@ btnNext.addEventListener('click', e => {
 
 document.addEventListener('keydown', e => {
   if (!document.body.classList.contains('fiche-mode')) return;
-  if (e.key === 'ArrowLeft'  && indexActuel > 0)                         transitionVersFiche(indexActuel - 1);
-  else if (e.key === 'ArrowRight' && indexActuel < ordrePrefectures.length - 1) transitionVersFiche(indexActuel + 1);
-  else if (e.key === 'Escape') document.getElementById('retourCarte').click();
+  if      (e.key === 'ArrowLeft'  && indexActuel > 0)                              transitionVersFiche(indexActuel - 1);
+  else if (e.key === 'ArrowRight' && indexActuel < ordrePrefectures.length - 1)    transitionVersFiche(indexActuel + 1);
+  else if (e.key === 'Escape')  document.getElementById('retourCarte').click();
 });
 
 // =========================================================
@@ -201,7 +206,7 @@ document.addEventListener('keydown', e => {
 // =========================================================
 
 document.getElementById('retourCarte').addEventListener('click', () => {
-  // Animer la préfecture active avant de nettoyer
+  // Animation de déselection sur la préfecture active
   const prefActive = document.querySelector('.prefecture.active-prefecture');
   if (prefActive) {
     prefActive.classList.add('deselecting');
@@ -212,8 +217,8 @@ document.getElementById('retourCarte').addEventListener('click', () => {
   }
 
   setFicheMode(false);
-  carteContainer.classList.remove('minimized', 'okinawa-zoom');
-  btnOkinawa.classList.remove('active');
+  carteContainer.classList.remove('minimized', 'ryūkyū-zoom');
+  btnRyūkyū.classList.remove('active');
   nettoyerTouteLaCarte();
 });
 
@@ -248,9 +253,8 @@ document.querySelectorAll('.big-btn').forEach(btn => {
     if (!wasActive) {
       btn.classList.add('active');
       if (ile === 'Ryūkyū') {
-        okinawaLayer.classList.add('okinawa-visible');
-        carteContainer.classList.add('okinawa-zoom');
-        document.querySelector('#Okinawa').classList.add('superile-highlight');
+        carteContainer.classList.add('ryūkyū-zoom');
+        document.querySelector('#ryūkyū').classList.add('superile-highlight');
       } else {
         document.querySelectorAll(`.prefecture[data-main-ile="${ile}"]`)
           .forEach(p => p.classList.add('superile-highlight'));
@@ -266,8 +270,7 @@ document.querySelectorAll('.big-btn').forEach(btn => {
 document.querySelectorAll('.top-region-btn').forEach(btn => {
   btn.addEventListener('click', e => {
     e.stopPropagation();
-    const regionId = btn.getAttribute('data-target-region');
-    activerRegion(regionId);
+    activerRegion(btn.getAttribute('data-target-region'));
   });
 });
 
@@ -320,11 +323,13 @@ document.querySelectorAll('.prefecture').forEach(el => {
 
 // =========================================================
 //   ÉVÉNEMENTS — CLIC EXTÉRIEUR (désélection)
+//   Sélecteurs corrigés : .dock-navigation-carte au lieu de
+//   .boutons-iles / .boutons-regions qui n'existent pas
 // =========================================================
 
 document.addEventListener('click', e => {
   if (document.body.classList.contains('fiche-mode')) return;
-  if (!e.target.closest('.boutons-iles, .boutons-regions, svg, .navbar')) {
+  if (!e.target.closest('.dock-navigation-carte, .mobile-bottom-bar, svg, .navbar')) {
     nettoyerTouteLaCarte();
   }
 });
@@ -354,7 +359,7 @@ searchInput.addEventListener('input', e => {
       const li   = document.createElement('li');
       li.classList.add('suggestion-item');
       li.innerHTML = `
-        <img src="../drapeaux/${id}.svg" alt="Drapeau ${info.romaji}" class="sugg-flag">
+        <img src="flags/${id}.svg" alt="Drapeau ${info.romaji}" class="sugg-flag">
         <span>${info.romaji}</span>
       `;
       li.addEventListener('click', () => {
@@ -384,8 +389,7 @@ searchInput.addEventListener('keydown', e => {
     mettreEnValeurListe(items);
   } else if (e.key === 'Enter') {
     e.preventDefault();
-    const cible = indexSuggestion > -1 ? items[indexSuggestion] : items[0];
-    cible?.click();
+    (indexSuggestion > -1 ? items[indexSuggestion] : items[0])?.click();
   } else if (e.key === 'Escape') {
     searchSuggestions.classList.remove('active');
     searchInput.blur();
