@@ -82,7 +82,7 @@ function ouvrirFiche(prefectureId) {
   if (stats) stats.style.display = 'grid';
 
   const imgDrapeau = document.getElementById('prefecture-drapeau');
-  imgDrapeau.src = `flags/${prefectureId}.svg`;
+  imgDrapeau.src = `../drapeaux/${prefectureId}.svg`;
   imgDrapeau.style.display = 'block';
 
   // Compteur navigation
@@ -359,7 +359,7 @@ searchInput.addEventListener('input', e => {
       const li   = document.createElement('li');
       li.classList.add('suggestion-item');
       li.innerHTML = `
-        <img src="flags/${id}.svg" alt="Drapeau ${info.romaji}" class="sugg-flag">
+        <img src="../drapeaux/${id}.svg" alt="Drapeau ${info.romaji}" class="sugg-flag">
         <span>${info.romaji}</span>
       `;
       li.addEventListener('click', () => {
