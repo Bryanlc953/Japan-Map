@@ -144,6 +144,7 @@ body:not(.fiche-mode) { overflow-y: hidden; }
 body {
   min-height: 100vh;
   background-color: var(--bg);
+
   color: var(--text);
   transition: background 0.3s ease, color 0.3s ease;
   display: flex;
@@ -216,7 +217,7 @@ svg {
   pointer-events: none;
 }
 .carte-container.minimized   { transform: translate(17vw, 0vh) scale(0.7); z-index: 1; }
-.carte-container.okinawa-zoom { transform: translate(-9vw, 0vh) scale(0.8); }
+.carte-container.ryūkyū-zoom { transform: translate(-9vw, 0vh) scale(0.8); }
 
 /* =========================================================
    PRÉFECTURES
@@ -247,17 +248,6 @@ svg {
 .prefecture.active-prefecture:hover {
   fill: var(--pref-hover-fill) !important;
   cursor: pointer;
-}
-
-/* Animation de déselection : la préfecture repasse par le hover avant de revenir au repos */
-@keyframes prefDeselect {
-  0%   { fill: var(--pref-active-fill); }
-  45%  { fill: var(--pref-hover-fill); }
-  100% { fill: var(--pref-fill); }
-}
-.prefecture.deselecting {
-  animation: prefDeselect 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
-  stroke-width: 0.5 !important;
 }
 
 /* Couleurs régionales */
@@ -311,22 +301,21 @@ body.fiche-mode .prefecture {
 }
 
 /* =========================================================
-   COUCHE OKINAWA
+   COUCHE Ryūkyū
    ========================================================= */
-.okinawa-layer {
+.ryūkyū-layer {
   position: fixed;
   top: 110%;
   left: 27%;
   width: 200px;
   height: auto;
   transform: translate(-50%, -50%) scale(1.5);
-  opacity: 0;
-  pointer-events: none;
+  opacity: 1;
+  pointer-events: auto;
   transition: opacity 0.45s ease;
   z-index: 9999;
   contain: layout;
 }
-.okinawa-layer.okinawa-visible { opacity: 1; pointer-events: auto; }
 
 /* =========================================================
    ÉTIQUETTE AU SURVOL
@@ -712,13 +701,7 @@ body.fiche-mode:not(.region-active-mode) .fiche-navbar {
   transition: transform 0.2s ease;
 }
 .nav-pill-btn:hover:not(:disabled) { transform: scale(1.1); }
-.nav-pill-btn:disabled {
-  opacity: 0.25;
-  cursor: not-allowed;
-  filter: grayscale(1);
-  transform: scale(0.92);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
+.nav-pill-btn:disabled              { opacity: 0.2; cursor: not-allowed; }
 
 .fiche-compteur {
   font-family: 'Funnelsans', serif;
@@ -971,3 +954,75 @@ body:not(.fiche-mode) #svgPortrait { display: none; }
 .slot-column  { display: flex; flex-direction: column; transition: transform 1.2s cubic-bezier(0.45,0.05,0.55,0.95); }
 .slot-digit   { height: 1.5rem; display: flex; justify-content: center; align-items: center; }
 .slot-separator { margin: 0 2px; }
+
+/* =========================================================
+   ANIMATION DÉSELECTION PRÉFECTURE
+   ========================================================= */
+@keyframes prefDeselect {
+  0%   { fill: var(--pref-active-fill); }
+  45%  { fill: var(--pref-hover-fill);  }
+  100% { fill: var(--pref-fill);        }
+}
+.prefecture.deselecting {
+  animation: prefDeselect 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  stroke-width: 0.5 !important;
+}
+
+/* =========================================================
+   BOUTONS PRÉCÉDENT / SUIVANT — état désactivé
+   ========================================================= */
+.nav-pill-btn:hover:not(:disabled) { transform: scale(1.1); }
+.nav-pill-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+  filter: grayscale(1);
+  transform: scale(0.92);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* =========================================================
+   BLOC VILLES PRINCIPALES
+   ========================================================= */
+.villes-bloc {
+  padding: 16px 20px;
+  background: var(--card-bg);
+  border-radius: 15px;
+  border: 1px solid var(--btn-border);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin: 0 0 24px 0;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.villes-liste {
+  list-style: none;
+  margin: 10px 0 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ville-item {
+  font-family: 'Funnelsans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text);
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  transition: color 0.3s ease;
+}
+body.dark-theme .ville-item   { border-bottom: 1px solid rgba(255,255,255,0.05); }
+.ville-item:last-child        { border-bottom: none; }
+
+/* Animation d'entrée en mode fiche */
+body.fiche-mode .villes-bloc {
+  opacity: 0;
+  animation: slideUp 0.6s ease forwards;
+  animation-delay: 0.5s;
+}
+
+/* Animation lors de la transition entre fiches */
+.fiche-transition-out.villes-bloc,
+#ficheVillesBloc.fiche-transition-out {
+  animation: fadeOutDown 0.2s ease forwards !important;
+}
