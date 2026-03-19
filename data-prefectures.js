@@ -1,388 +1,420 @@
-// data-prefectures.js
-const prefecture_INFOS = {
-  "Aichi": { 
-    kanji: "愛知", 
-    hiragana: "あいち", 
-    desc: "Ancienne prefecture du sud du Kyūshū.", 
-    capitale: "Nagoya", 
-    population: "7,460,000"
-  },
+// =========================================================
+//   ÉLÉMENTS DU DOM
+// =========================================================
+const carteContainer    = document.getElementById('carteContainer');
+const ficheDetail       = document.getElementById('ficheDetail');
+const searchInput       = document.getElementById('searchPrefecture');
+const ryūkyūLayer      = document.getElementById('ryūkyūLayer');
+const btnRyūkyū        = document.querySelector('[data-super-ile-btn="Ryūkyū"]');
+const hoverLabel        = document.getElementById('prefecture-hover-label');
+const searchSuggestions = document.getElementById('search-suggestions');
+const navFiche          = document.querySelector('.fiche-navbar');
+const btnPrev           = document.getElementById('fiche-prev');
+const btnNext           = document.getElementById('fiche-next');
 
-  "Akita": { 
-    kanji: "秋田", 
-    hiragana: "あきた", 
-    desc: "prefecture historique dans la région de Kansai.", 
-    capitale: "Akita",
-    population: "897,000" 
-  },
+const ordrePrefectures = Object.keys(prefecture_INFOS);
+let indexActuel    = null;
+let indexSuggestion = -1;
 
-  "Aomori": {
-     kanji: "青森",
-     hiragana: "あおもり",
-     desc: "prefecture sur la côte est de Kyūshū.", 
-     capitale: "Aomori",
-     population: "1,165,000"
-    },
+// =========================================================
+//   UTILITAIRES
+// =========================================================
 
-  "Chiba": { 
-    kanji: "千葉",
-    hiragana: "ちば",
-    desc: "Région du sud-est du Kyūshū.", 
-    capitale: "Chiba",
-    population: "6,251,000" 
-  },
+function setFicheMode(actif, modeRegion = false) {
+  document.body.classList.toggle('fiche-mode', actif);
+  document.body.classList.toggle('region-active-mode', actif && modeRegion);
+  navFiche.style.display = (actif && !modeRegion) ? 'flex' : 'none';
+  document.documentElement.style.overflowY = actif ? 'auto' : '';
+  document.body.style.overflowY             = actif ? 'auto' : '';
+}
 
-  "Ehime": { 
-    kanji: "愛媛", 
-    hiragana: "えひめ", 
-    desc: "prefecture du nord du Kyūshū.",
-    capitale: "Matsuyama",
-    population: "1,296,000" 
-  },
+function nettoyerTouteLaCarte() {
+  // Pas de protection deselecting — on nettoie tout sans condition
+  document.querySelectorAll('.prefecture').forEach(p => {
+    p.classList.remove('selected', 'superile-highlight', 'illumine', 'active-prefecture', 'deselecting');
+  });
+  document.querySelectorAll('.big-btn, .region-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.region-svg-group').forEach(g => g.classList.remove('is-active-region'));
+  carteContainer.classList.remove('ryūkyū-zoom');
+  // Ryūkyū reste toujours visible
+}
 
-  "Fukui": { 
-    kanji: "福井", 
-    hiragana: "ふくい", 
-    desc: "prefecture de l’ouest de Kyūshū.",
-    capitale: "Fukui",
-    population: "739,000"
-  },
+// =========================================================
+//   FICHE PRÉFECTURE
+// =========================================================
 
-  "Fukuoka": { 
-    kanji: "福岡", 
-    hiragana: "ふくおか", 
-    desc: "prefecture du sud-ouest du Kyūshū.",
-    capitale: "Fukuoka",
-    population: "5,092,000"
-  },
+function ouvrirFiche(prefectureId) {
+  const info = prefecture_INFOS[prefectureId];
+  if (!info) return;
 
-  "Fukushima": { 
-    kanji: "福島", 
-    hiragana: "ふくしま", 
-    desc: "prefecture du nord-est du Japon.",
-    capitale: "Fukushima",
-    population: "1,743,000"
-  },
+  nettoyerTouteLaCarte();
+  indexActuel = ordrePrefectures.indexOf(prefectureId);
 
-  "Gifu": { 
-    kanji: "岐阜", 
-    hiragana: "ぎふ", 
-    desc: "prefecture du centre du Japon.",
-    capitale: "Gifu",
-    population: "1,916,000"
-  },
+  // Allumer la préfecture sur la mini-carte
+  document.querySelectorAll(`.prefecture[data-prefecture="${prefectureId}"]`)
+    .forEach(p => p.classList.add('active-prefecture'));
 
-  "Gunma": { 
-    kanji: "群馬", 
-    hiragana: "ぐんま", 
-    desc: "prefecture du centre du Japon.",
-    capitale: "Maebashi",
-    population: "1,890,000"
- },
+  // Remplir les champs
+  document.getElementById('ficheTitre').textContent = `${info.kanji} — ${info.romaji}`;
+  document.getElementById('ficheTexte').textContent = info.desc;
 
-  "Hiroshima": { 
-    kanji: "広島",
-    hiragana: "ひろしま", 
-    desc: "prefecture du sud-ouest du Japon.", 
-    capitale: "Hiroshima",
-    population: "2,714,000"
-  },
+  const elemCap = document.getElementById('ficheCapitale');
+  if (elemCap) {
+    elemCap.previousElementSibling.textContent = 'CAPITALE';
+    elemCap.textContent = info.capitale || 'N/A';
+  }
+  document.getElementById('fichePop').textContent = info.population || 'N/A';
 
-  "Hokkaidō": { 
-    kanji: "北海道", 
-    hiragana: "ほっかいどう", 
-    desc: "prefecture du nord-est du Japon.",
-    capitale: "Sapporo",
-    population: "5,043,000"
-  },
+  // Villes principales
+  const villesListe = document.getElementById('ficheVilles');
+  const villesBloc  = document.getElementById('ficheVillesBloc');
+  if (villesListe) {
+    if (info.villes?.length) {
+      villesListe.innerHTML = info.villes.map(v => `<li class="ville-item">${v}</li>`).join('');
+      if (villesBloc) villesBloc.style.display = 'block';
+    } else {
+      villesListe.innerHTML = '';
+      if (villesBloc) villesBloc.style.display = 'none';
+    }
+  }
 
-  "Hyōgo": { 
-    kanji: "兵庫", 
-    hiragana: "ひょうご", 
-    desc: "prefecture du sud-ouest du Japon.",
-    capitale: "Kobe",
-    population: "5,337,000"
-  },
+  const stats = document.querySelector('.stats-grid');
+  if (stats) stats.style.display = 'grid';
 
-  "Ibaraki": { 
-    kanji: "茨城", 
-    hiragana: "いばらき", 
-    desc: "prefecture du centre du Japon.",
-    capitale: "Mito",
-    population: "2,806,000"
-  },
+  const imgDrapeau = document.getElementById('prefecture-drapeau');
+  imgDrapeau.src = `../drapeaux/${prefectureId}.svg`;
+  imgDrapeau.style.display = 'block';
 
-  "Ishikawa": { 
-    kanji: "石川", 
-    hiragana: "いしかわ", 
-    desc: "je sais pas encore.",
-    capitale: "Kanazawa",
-    population: "1,098,000" 
-  },
+  // Compteur navigation
+  document.getElementById('compteur-actuel').textContent = indexActuel + 1;
+  document.getElementById('compteur-total').textContent  = ordrePrefectures.length;
+  btnPrev.disabled = indexActuel === 0;
+  btnNext.disabled = indexActuel === ordrePrefectures.length - 1;
 
-  "Iwate": { 
-    kanji: "岩手", 
-    hiragana: "いわて", 
-    desc: "prefecture du nord-est du Japon.",
-    capitale: "Morioka",
-    population: "1,145,000"
-  },
+  setFicheMode(true);
+  carteContainer.classList.add('minimized');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-  "Kagawa": { 
-    kanji: "香川", 
-    hiragana: "かがわ", 
-    desc: "je sais pas encore.", 
-    capitale: "Takamatsu",
-    population: "917,000"
-  },
+// =========================================================
+//   FICHE RÉGION
+// =========================================================
 
-  "Kagoshima": { 
-    kanji: "鹿児島", 
-    hiragana: "かごしま", 
-    desc: "je sais pas encore.",
-    capitale: "Kagoshima",
-    population: "1,532,000"
-  },
+function remplirFicheRegion(idRegion) {
+  nettoyerTouteLaCarte();
 
-  "Kanagawa": { 
-    kanji: "神奈川", 
-    hiragana: "かながわ", 
-    desc: "je sais pas encore.",
-    capitale: "Yokohama",
-    population: "9,225,000"
-  },
+  const info = region_INFOS[idRegion];
+  if (!info) return;
 
-  "Kōchi": { 
-    kanji: "高知", 
-    hiragana: "こうち", 
-    desc: "je sais pas encore.",
-    capitale: "Kōchi",
-    population: "656,000"
-  },
+  document.getElementById('ficheTitre').textContent = `${info.nomKanji} — ${info.nomRomaji}`;
+  document.getElementById('ficheTexte').textContent = info.desc;
 
-  "Kumamoto": { 
-    kanji: "熊本", 
-    hiragana: "くまとも", 
-    desc: "je sais pas encore.",
-    capitale: "Kumamoto",
-    population: "1,697,000"
-  },
+  const stats = document.querySelector('.stats-grid');
+  if (stats) stats.style.display = 'grid';
 
-  "Kyōto": { 
-    kanji: "京都", 
-    hiragana: "きょうと", 
-    desc: "je sais pas encore.",
-    capitale: "Kyōto",
-    population: "2,520,000"
-  },
+  const elemCap = document.getElementById('ficheCapitale');
+  if (elemCap) {
+    elemCap.previousElementSibling.textContent = 'VILLE PRINCIPALE';
+    elemCap.textContent = info.cap;
+  }
 
-  "Mie": { 
-    kanji: "三重", 
-    hiragana: "みえ", 
-    desc: "je sais pas encore.",
-    capitale: "Tsu",
-    population: "1,711,000"
-  },
+  const elemPop = document.getElementById('fichePop');
+  if (elemPop) elemPop.textContent = info.pop;
 
-  "Miyagi": { 
-    kanji: "宮城", 
-    hiragana: "みやぎ", 
-    desc: "prefecture du nord-est du Japon.",
-    capitale: "Sendai",
-    population: "2,248,000" 
-  },
+  // Pas de villes ni drapeau en mode région
+  const villesBloc = document.getElementById('ficheVillesBloc');
+  if (villesBloc) villesBloc.style.display = 'none';
 
-  "Miyazaki": { 
-    kanji: "宮崎", 
-    hiragana: "みやざき", 
-    desc: "je sais pas encore.",
-    capitale: "Miyazaki",
-    population: "1,033,000"
-  },
+  const drapeau = document.querySelector('#prefecture-drapeau');
+  if (drapeau) drapeau.style.display = 'none';
 
-  "Nagano": { 
-    kanji: "長野", 
-    hiragana: "ながの", 
-    desc: "je sais pas encore.",
-    capitale: "Nagano",
-    population: "1,987,000"
-  },
+  document.querySelectorAll('.top-region-btn').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-target-region') === idRegion);
+  });
 
-  "Nagasaki": { 
-    kanji: "長崎", 
-    hiragana: "ながさき", 
-    desc: "je sais pas encore.",
-    capitale: "Nagasaki",
-    population: "1,252,000"
-  },
+  setFicheMode(true, true);
+  carteContainer.classList.add('minimized');
+}
 
-  "Nara": { 
-    kanji: "奈良", 
-    hiragana: "なら", 
-    desc: "je sais pas encore.",
-    capitale: "Nara",
-    population: "1,285,000"
-  },
+function activerRegion(idRegion) {
+  const group = document.getElementById(idRegion)
+    || document.querySelector(`.region-svg-group[data-region-romaji="${idRegion}"]`);
+  if (!group) { console.error('Région SVG introuvable :', idRegion); return; }
 
-  "Niigata": { 
-    kanji: "新潟", 
-    hiragana: "にいがた", 
-    desc: "je sais pas encore.",
-    capitale: "Niigata",
-    population: "2,099,000"
-  },
+  const regionNom = group.getAttribute('data-region-romaji') || idRegion;
+  const cleanNom  = regionNom.replace('region-', '');
 
-  "Ōita": { 
-    kanji: "大分", 
-    hiragana: "おおいた", 
-    desc: "je sais pas encore.",
-    capitale: "Ōita",
-    population: "1,085,000" 
-  },
+  remplirFicheRegion(group.id);
 
-  "Okayama": { 
-    kanji: "岡山", 
-    hiragana: "おかやま", 
-    desc: "je sais pas encore.",
-    capitale: "Okayama",
-    population: "1,831,000"
-  },
+  group.classList.add('is-active-region');
+  document.querySelectorAll(`.prefecture[data-region="${cleanNom}"]`)
+    .forEach(p => p.classList.add('selected'));
 
-  "Okinawa": { 
-    kanji: "沖縄", 
-    hiragana: "おきなわ", 
-    desc: "prefecture du sud du Japon.",
-    capitale: "Naha",
-    population: "1,466,000"
-  },
+  const dockBtn = document.querySelector(`.region-btn[data-region-btn="${cleanNom}"]`);
+  if (dockBtn) dockBtn.classList.add('active');
+}
 
-  "Ōsaka": { 
-    kanji: "大阪", 
-    hiragana: "おおさか", 
-    desc: "je sais pas encore.",
-    capitale: "Ōsaka",
-    population: "8,757,000" 
-  },
+// =========================================================
+//   NAVIGATION ENTRE FICHES (avec animation villes)
+// =========================================================
 
-  "Saga": { 
-    kanji: "佐賀", 
-    hiragana: "さが", 
-    desc: "je sais pas encore.",
-    capitale: "Saga",
-    population: "788,000" 
-  },
+function transitionVersFiche(nouvelIndex) {
+  const elementsAAnimer = document.querySelectorAll(
+    '#ficheTitre, #prefecture-drapeau, .stats-grid, #ficheTexte, #pref-portrait-container, #ficheVillesBloc'
+  );
 
-  "Saitama": { 
-    kanji: "埼玉", 
-    hiragana: "さいたま", 
-    desc: "je sais pas encore.",
-    capitale: "Saitama",
-    population: "7,332,000" 
-  },
+  btnPrev.style.pointerEvents = 'none';
+  btnNext.style.pointerEvents = 'none';
+  elementsAAnimer.forEach(el => el.classList.add('fiche-transition-out'));
 
-  "Shiga": { 
-    kanji: "滋賀", 
-    hiragana: "しが", 
-    desc: "je sais pas encore.",
-    capitale: "Ōtsu",
-    population: "1,402,000" 
-  },
+  setTimeout(() => {
+    ouvrirFiche(ordrePrefectures[nouvelIndex]);
+    elementsAAnimer.forEach(el => {
+      el.style.animation = 'none';
+      el.offsetHeight; // reflow
+      el.style.animation = null;
+      el.classList.remove('fiche-transition-out');
+    });
+    btnPrev.style.pointerEvents = 'auto';
+    btnNext.style.pointerEvents = 'auto';
+  }, 200);
+}
 
-  "Shimane": { 
-    kanji: "島根", 
-    hiragana: "しまね", 
-    desc: "je sais pas encore.",
-    capitale: "Matsue",
-    population: "642,000" 
-  },
+// =========================================================
+//   ÉVÉNEMENTS — NAVIGATION FICHES
+// =========================================================
 
-  "Shizuoka": { 
-    kanji: "静岡", 
-    hiragana: "しずおか", 
-    desc: "je sais pas encore.",
-    capitale: "Shizuoka",
-    population: "3,527,000" 
-  },
+btnPrev.addEventListener('click', e => {
+  e.stopPropagation();
+  if (indexActuel > 0) transitionVersFiche(indexActuel - 1);
+});
 
-  "Tochigi": { 
-    kanji: "栃木", 
-    hiragana: "とちぎ", 
-    desc: "je sais pas encore.",
-    capitale: "Utsunomiya",
-    population: "1,885,000" 
-  },
+btnNext.addEventListener('click', e => {
+  e.stopPropagation();
+  if (indexActuel < ordrePrefectures.length - 1) transitionVersFiche(indexActuel + 1);
+});
 
-  "Tokushima": { 
-    kanji: "徳島", 
-    hiragana: "とくしま", 
-    desc: "je sais pas encore.",
-    capitale: "Tokushima",
-    population: "685,000" 
-  },
+document.addEventListener('keydown', e => {
+  if (!document.body.classList.contains('fiche-mode')) return;
+  if      (e.key === 'ArrowLeft'  && indexActuel > 0)                              transitionVersFiche(indexActuel - 1);
+  else if (e.key === 'ArrowRight' && indexActuel < ordrePrefectures.length - 1)    transitionVersFiche(indexActuel + 1);
+  else if (e.key === 'Escape')  document.getElementById('retourCarte').click();
+});
 
-  "Tōkyō": { 
-    kanji: "東京", 
-    hiragana: "とうきょう", 
-    desc: "je sais pas encore.",
-    capitale: "Tōkyō",
-    population: "14,178,000" 
-  },
+// =========================================================
+//   ÉVÉNEMENTS — RETOUR CARTE
+// =========================================================
 
-  "Tottori": { 
-    kanji: "鳥取", 
-    hiragana: "とっとり", 
-    desc: "je sais pas encore.",
-    capitale: "Tottori",
-    population: "531,000" 
-  },
+document.getElementById('retourCarte').addEventListener('click', () => {
+  // Animation de déselection sur la préfecture active
+  const prefActive = document.querySelector('.prefecture.active-prefecture');
+  if (prefActive) {
+    prefActive.classList.add('deselecting');
+    prefActive.classList.remove('active-prefecture');
+    prefActive.addEventListener('animationend', () => {
+      prefActive.classList.remove('deselecting');
+    }, { once: true });
+  }
 
-  "Toyama": { 
-    kanji: "富山", 
-    hiragana: "とやま", 
-    desc: "je sais pas encore.",
-    capitale: "Toyama",
-    population: "997,000" 
-  },
+  setFicheMode(false);
+  carteContainer.classList.remove('minimized', 'ryūkyū-zoom');
+  btnRyūkyū.classList.remove('active');
+  nettoyerTouteLaCarte();
+});
 
-  "Wakayama": { 
-    kanji: "和歌山", 
-    hiragana: "わかやま", 
-    desc: "je sais pas encore.",
-    capitale: "Wakayama",
-    population: "880,000" 
-  },
+// =========================================================
+//   ÉVÉNEMENTS — BOUTONS RÉGIONS (dock droit)
+// =========================================================
 
-  "Yamagata": { 
-    kanji: "山形", 
-    hiragana: "やまがた", 
-    desc: "prefecture du nord-est du Japon.",
-    capitale: "Yamagata",
-    population: "1,011,000" 
-  },
+document.querySelectorAll('.region-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const regionNom = btn.getAttribute('data-region-btn');
+    const group = document.querySelector(`.region-svg-group[data-region-romaji="${regionNom}"]`);
+    if (group) activerRegion(group.id);
+    else console.error('Groupe SVG introuvable pour la région :', regionNom);
+  });
+});
 
-  "Yamaguchi": { 
-    kanji: "山口", 
-    hiragana: "やまぐち", 
-    desc: "je sais pas encore.",
-    capitale: "Yamaguchi",
-    population: "1,281,000" 
-  },
+// =========================================================
+//   ÉVÉNEMENTS — BOUTONS ÎLES (dock droit)
+// =========================================================
 
+document.querySelectorAll('.big-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (document.body.classList.contains('fiche-mode')) return;
 
-  "Yamanashi": { 
-    kanji: "山梨", 
-    hiragana: "やまなし", 
-    desc: "je sais pas encore.",
-    capitale: "Kōfu",
-    population: "791,000" 
-  },
+    const ile       = btn.getAttribute('data-super-ile-btn');
+    const wasActive = btn.classList.contains('active');
 
+    nettoyerTouteLaCarte();
 
-};
+    if (!wasActive) {
+      btn.classList.add('active');
+      if (ile === 'Ryūkyū') {
+        carteContainer.classList.add('ryūkyū-zoom');
+        document.querySelector('#ryūkyū').classList.add('superile-highlight');
+      } else {
+        document.querySelectorAll(`.prefecture[data-main-ile="${ile}"]`)
+          .forEach(p => p.classList.add('superile-highlight'));
+      }
+    }
+  });
+});
 
-for (const key in prefecture_INFOS) {
-  if (!prefecture_INFOS[key].romaji) {
-    prefecture_INFOS[key].romaji = key;
+// =========================================================
+//   ÉVÉNEMENTS — BARRE HAUTE DES RÉGIONS
+// =========================================================
+
+document.querySelectorAll('.top-region-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    activerRegion(btn.getAttribute('data-target-region'));
+  });
+});
+
+// =========================================================
+//   ÉVÉNEMENTS — CLIC SUR GROUPE RÉGION (carte SVG)
+// =========================================================
+
+document.querySelectorAll('.region-svg-group').forEach(group => {
+  group.addEventListener('click', e => {
+    if (!group.classList.contains('is-active-region')) return;
+    e.stopPropagation();
+    remplirFicheRegion(group.id);
+  });
+});
+
+// =========================================================
+//   ÉVÉNEMENTS — PRÉFECTURES (carte SVG)
+// =========================================================
+
+document.querySelectorAll('.prefecture').forEach(el => {
+
+  el.addEventListener('click', e => {
+    const regionParent = el.closest('.region-svg-group');
+    if (regionParent?.classList.contains('is-active-region')) return;
+    e.stopPropagation();
+    ouvrirFiche(el.getAttribute('data-prefecture'));
+  });
+
+  el.addEventListener('mouseenter', () => {
+    const regionParent = el.closest('.region-svg-group');
+    if (regionParent?.classList.contains('is-active-region')) return;
+    if (document.body.classList.contains('fiche-mode')) return;
+
+    const id   = el.getAttribute('data-prefecture');
+    const info = prefecture_INFOS[id];
+    el.classList.add('illumine');
+    if (info) {
+      hoverLabel.textContent   = `${info.kanji} – ${info.romaji}`;
+      hoverLabel.style.display = 'block';
+    }
+  });
+
+  el.addEventListener('mouseleave', () => {
+    const regionParent = el.closest('.region-svg-group');
+    if (regionParent?.classList.contains('is-active-region')) return;
+    el.classList.remove('illumine');
+    hoverLabel.style.display = 'none';
+  });
+});
+
+// =========================================================
+//   ÉVÉNEMENTS — CLIC EXTÉRIEUR (désélection)
+//   Sélecteurs corrigés : .dock-navigation-carte au lieu de
+//   .boutons-iles / .boutons-regions qui n'existent pas
+// =========================================================
+
+document.addEventListener('click', e => {
+  if (document.body.classList.contains('fiche-mode')) return;
+  if (!e.target.closest('.dock-navigation-carte, .mobile-bottom-bar, svg, .navbar')) {
+    nettoyerTouteLaCarte();
+  }
+});
+
+// =========================================================
+//   RECHERCHE
+// =========================================================
+
+searchInput.addEventListener('input', e => {
+  const valeur = e.target.value.toLowerCase().trim();
+  searchSuggestions.innerHTML = '';
+  indexSuggestion = -1;
+
+  if (!valeur) {
+    searchSuggestions.classList.remove('active');
+    return;
+  }
+
+  const resultats = ordrePrefectures.filter(id => {
+    const romaji = prefecture_INFOS[id].romaji.toLowerCase();
+    return romaji.startsWith(valeur) || id.toLowerCase().startsWith(valeur);
+  });
+
+  if (resultats.length > 0) {
+    resultats.forEach(id => {
+      const info = prefecture_INFOS[id];
+      const li   = document.createElement('li');
+      li.classList.add('suggestion-item');
+      li.innerHTML = `
+        <img src="../drapeaux/${id}.svg" alt="Drapeau ${info.romaji}" class="sugg-flag">
+        <span>${info.romaji}</span>
+      `;
+      li.addEventListener('click', () => {
+        ouvrirFiche(id);
+        searchInput.value = '';
+        searchSuggestions.classList.remove('active');
+      });
+      searchSuggestions.appendChild(li);
+    });
+    searchSuggestions.classList.add('active');
+  } else {
+    searchSuggestions.classList.remove('active');
+  }
+});
+
+searchInput.addEventListener('keydown', e => {
+  const items = searchSuggestions.querySelectorAll('.suggestion-item');
+  if (!searchSuggestions.classList.contains('active') || !items.length) return;
+
+  if (e.key === 'ArrowDown' || (e.key === 'Tab' && !e.shiftKey)) {
+    e.preventDefault();
+    indexSuggestion = (indexSuggestion + 1) % items.length;
+    mettreEnValeurListe(items);
+  } else if (e.key === 'ArrowUp' || (e.key === 'Tab' && e.shiftKey)) {
+    e.preventDefault();
+    indexSuggestion = (indexSuggestion - 1 + items.length) % items.length;
+    mettreEnValeurListe(items);
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    (indexSuggestion > -1 ? items[indexSuggestion] : items[0])?.click();
+  } else if (e.key === 'Escape') {
+    searchSuggestions.classList.remove('active');
+    searchInput.blur();
+  }
+});
+
+function mettreEnValeurListe(items) {
+  items.forEach(item => item.classList.remove('keyboard-focus'));
+  if (indexSuggestion >= 0 && indexSuggestion < items.length) {
+    const itemActuel = items[indexSuggestion];
+    itemActuel.classList.add('keyboard-focus');
+    itemActuel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 }
 
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-group')) {
+    searchSuggestions.classList.remove('active');
+  }
+});
+
+// =========================================================
+//   THÈME SOMBRE
+// =========================================================
+
+document.getElementById('nightModeToggle').addEventListener('change', () => {
+  document.body.classList.toggle('dark-theme');
+});
