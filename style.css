@@ -3,12 +3,12 @@
    ========================================================= */
 @font-face {
   font-family: 'Tsukuhoucustom';
-  src: url('../font/TsukuhouShogoMin-OFL.woff2') format('woff2');
+  src: url('font/TsukuhouShogoMin-OFL.woff2') format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: 'Funnelsans';
-  src: url('../font/Funnelsans.ttf') format('truetype');
+  src: url('font/Funnelsans.ttf') format('truetype');
   font-display: swap;
 }
 
