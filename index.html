@@ -584,9 +584,9 @@
     <ul class="nav-links">
       <li><a href="#stats">Chiffres</a></li>
       <li><a href="#prefectures">Préfectures</a></li>
-      <li><a href="index.html">Carte</a></li>
+      <li><a href="carte.html">Carte</a></li>
     </ul>
-    <a class="nav-cta" href="index.html">Explorer →</a>
+    <a class="nav-cta" href="carte.html">Explorer →</a>
   </nav>
 
   <!-- =============================================
@@ -696,7 +696,7 @@
       <p class="reveal reveal-delay-2">
         Explorez chaque préfecture directement sur la carte. Cliquez, naviguez par région, par archipel, découvrez fiches détaillées, capitales, villes principales et bien plus.
       </p>
-      <a class="btn-explorer reveal reveal-delay-3" href="index.html">Ouvrir la carte →</a>
+      <a class="btn-explorer reveal reveal-delay-3" href="carte.html">Ouvrir la carte →</a>
     </div>
   </section>
 
@@ -817,7 +817,7 @@
         const region = regionMapping[key] || '';
         const item   = document.createElement('a');
         item.className = 'pref-item';
-        item.href      = `index.html`;
+        item.href      = `carte.html`;
         item.style.transitionDelay = `${Math.min(i * 0.02, 0.3)}s`;
 
         item.innerHTML = `
