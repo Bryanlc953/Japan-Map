@@ -4,10 +4,12 @@
 @font-face {
   font-family: 'Tsukuhoucustom';
   src: url('font/TsukuhouShogoMin-OFL.otf') format('truetype');
+  font-display: swap;
 }
 @font-face {
   font-family: 'Funnelsans';
-  src: url('font/Funnelsans.ttf') format('regular');
+  src: url('font/Funnelsans.ttf') format('truetype');
+  font-display: swap;
 }
 
 /* =========================================================
