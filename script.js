@@ -292,13 +292,15 @@ document.querySelectorAll('.big-btn').forEach(btn => {
 
     if (!wasActive) {
       btn.classList.add('active');
+      
+      // 1. On applique le zoom spécifique si c'est Ryūkyū
       if (ile === 'Ryūkyū') {
         carteContainer.classList.add('ryūkyū-zoom');
-        document.querySelector('#ryūkyū').classList.add('superile-highlight');
-      } else {
-        document.querySelectorAll(`.prefecture[data-main-ile="${ile}"]`)
-          .forEach(p => p.classList.add('superile-highlight'));
-      }
+      } 
+      
+      // 2. On allume TOUTES les îles (y compris Okinawa pour Ryūkyū)
+      document.querySelectorAll(`.prefecture[data-main-ile="${ile}"]`)
+        .forEach(p => p.classList.add('superile-highlight'));
     }
   });
 });
