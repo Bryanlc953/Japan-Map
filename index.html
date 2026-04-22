@@ -22,8 +22,36 @@
     <input placeholder="Rechercher..." type="search" class="search-input" id="searchPrefecture">
     <ul id="search-suggestions" class="search-suggestions"></ul>
   </div>
-
+<button id="btnOuvrirGalerie" class="gallery-open-btn">
+  <svg viewBox="0 0 250 193" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-dossier">
+    
+    <path class="dossier-arriere" d="M31.0874 181V36.0002C31.0874 30.4774 35.5645 26.0002 41.0874 26.0002H104.564C107.67 26.0002 110.6 27.4435 112.493 29.906L137.234 62.0945C139.127 64.557 142.057 66.0002 145.163 66.0002H227.087C232.61 66.0002 237.087 70.4774 237.087 76.0002V181C237.087 186.523 232.61 191 227.087 191H41.0874C35.5646 191 31.0874 186.523 31.0874 181Z" />
+    
+    <path class="feuille feuille-1" d="M0 54.5706L86.1401 5.77626L149.721 118.019L63.5804 166.814L0 54.5706Z" fill="white"/>
+    
+    <g filter="url(#filter0_d_70_9)" class="feuille feuille-2">
+      <rect x="66.0874" y="13.3853" width="99" height="129" transform="rotate(-7.77042 66.0874 13.3853)" fill="white"/>
+    </g>
+    
+    <g filter="url(#filter1_d_70_9)" class="feuille feuille-3">
+      <rect x="151.89" y="12.0002" width="99" height="129" transform="rotate(10.6331 151.89 12.0002)" fill="white"/>
+    </g>
+    
+    <g filter="url(#filter2_d_70_9)" class="dossier-avant">
+      <path class="dossier-avant-path" d="M237.087 76C237.087 70.4772 232.61 66 227.087 66H41.0875C35.5647 66 31.0876 70.4771 31.0876 76L31.0874 181C31.0874 186.523 35.5646 191 41.0874 191H227.087C232.61 191 237.087 186.523 237.087 181V76Z" />
+    </g>
+    
+    <defs>
+      <filter id="filter0_d_70_9" x="57.0874" y="0" width="124.532" height="149.201" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dx="-5" dy="4"/><feGaussianBlur stdDeviation="2"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_70_9"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_70_9" result="shape"/></filter>
+      <filter id="filter1_d_70_9" x="119.087" y="12.0002" width="130.103" height="153.052" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dx="-5" dy="4"/><feGaussianBlur stdDeviation="2"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_70_9"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_70_9" result="shape"/></filter>
+      <filter id="filter2_d_70_9" x="27.2874" y="60.2" width="213.6" height="132.6" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="-2"/><feGaussianBlur stdDeviation="1.9"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_70_9"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_70_9" result="shape"/></filter>
+    </defs>
+  </svg>
+</button>
   <div class="nav-separator"></div>
+
+
+
 
   <label class="theme-toggle-container" aria-label="Activer le mode sombre">
     <input type="checkbox" id="nightModeToggle" class="theme-toggle-input">
@@ -547,6 +575,29 @@
 
   <!-- ZONE DE DÉTAIL -->
 <div class="app-container">
+
+  <div id="galleryModal" class="gallery-modal">
+  <div class="gallery-content">
+    
+    <div class="gallery-header">
+      <h2>Toutes les préfectures</h2>
+      
+      <div class="gallery-filters">
+        <select id="sortGallery" class="filter-select">
+          <option value="az">Alphabétique (A - Z)</option>
+          <option value="za">Alphabétique (Z - A)</option>
+          <option value="pop-desc">Population (La + grande d'abord)</option>
+          <option value="pop-asc">Population (La + petite d'abord)</option>
+        </select>
+      </div>
+
+      <button id="closeGallery" class="close-btn">&times;</button>
+    </div>
+
+    <div id="galleryGrid" class="gallery-grid"></div>
+
+  </div>
+</div>
 
 
 <script src="data-prefectures.js"></script>
