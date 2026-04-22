@@ -50,7 +50,7 @@
   --flag-border: 1px solid #ddd;
 
   /* Navbar */
-  --nav-bg:     #ffffff8f;
+  --nav-bg:     #ffffff49;
   --nav-border: 1px solid #ffffff00;
   --nav-shadow: 0px 4px 15px #0001, 2px 6px 18px #0001;
   --nav-pill-bg:#f5f5f5;
@@ -73,6 +73,9 @@
   --heure-border: 1px solid #ffffff52;
   --heure-bg: #ffffff8f; 
   --texte-heure: #1e2c2b;
+
+  /* Galerie */
+  --background-gallery: #ffffff9a;
 }
 
 /* =========================================================
@@ -130,6 +133,9 @@ body.dark-theme {
   --heure-border: 1px solid #ffffff41;
   --heure-bg: #30303046; 
   --texte-heure: #f5ebd9;
+
+   /* Galerie */
+  --background-gallery: #0709317c;
 }
 
 /* =========================================================
@@ -395,7 +401,7 @@ body.fiche-mode .prefecture {
   top: 25px;
   left: 50%;
   transform: translate(-50%, 0);
-  z-index: 2000;
+  z-index: 11;
   background: var(--nav-bg);
   border: var(--nav-border);
   backdrop-filter: blur(12px);
@@ -1027,36 +1033,266 @@ body.fiche-mode .heure-japon-widget {
   pointer-events: none;
 }
 
+
+
 /* =========================================================
-   PILLULE MÉTÉO — ajustement en mode fiche
+   GALERIE MODAL (Fenêtre plein écran)
    ========================================================= */
-body.fiche-mode:not(.region-active-mode) .info-pillule {
-  /* La pillule est centrée dans la fiche-navbar */
-  pointer-events: none;
-}
-
-/* Le voile est invisible par défaut */
-.bg-overlay {
+.gallery-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  /* Utilise ta variable de couleur de fond, ou un noir/blanc transparent */
-  background-color: var(--bg); 
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(30, 44, 43, 0.4); /* Fond assombri */
+  backdrop-filter: blur(15px); /* L'effet verre poli */
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   opacity: 0;
-  pointer-events: none; /* Pour qu'on puisse cliquer à travers */
-  z-index: -1; /* Il reste derrière ton contenu, mais devant ton body/background */
-  transition: opacity 0.6s ease;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
 }
 
-/* Quand on ouvre une fiche, le voile s'opacifie */
-body.fiche-mode .bg-overlay {
-  opacity: 0.5; /* 80% opaque : cache le fond, met en valeur la carte et la fiche */
+/* Classe pour afficher la galerie */
+.gallery-modal.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-/* --- OPTIONNEL : Comportement en mode sombre --- */
-body.dark-theme.fiche-mode .bg-overlay {
-  background-color: #ffffff; /* Assombrit encore plus en mode nuit */
-  opacity: 0.8;
+.gallery-content {
+  background: var(--background-gallery);
+  width: 85%;
+  max-width: 1200px;
+  max-height: 85vh;
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+.close-btn {
+  background: none; border: none; font-size: 2.5rem; cursor: pointer; color: var(--text);
+}
+
+/* =========================================================
+   LA GRILLE ET LES CARTES
+   ========================================================= */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 cartes par ligne ! */
+  gap: 20px;
+  overflow-y: auto; /* Permet de scroller dans la fenêtre */
+  padding-right: 10px;
+}
+
+.gallery-card {
+  background: var(--btn-bg-box);
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 2px 6px 10px #0001;
+}
+
+.gallery-flag {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+.gallery-name { font-size: 1.3rem; font-weight: bold; color: var(--text); margin-bottom: 5px; }
+.gallery-pop { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; }
+
+.gallery-btn {
+  padding: 8px 15px;
+  background: var(--pref-fill);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+  width: 100%;
+}
+
+.gallery-btn:hover { background: var(--pref-active-fill); }
+
+/* Responsive : On adapte selon la taille de l'écran */
+@media (max-width: 1000px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .gallery-grid { grid-template-columns: 1fr; } }
+
+
+/* =========================================================
+   BOUTON VOIR TOUT (Mouvement Mécanique)
+   ========================================================= */
+
+.gallery-open-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 0;
+  color: var(--text);
+  font-weight: bold;
+  font-size: 0.8rem;
+  transition: color 0.3s ease;
+}
+
+/* La taille globale du SVG */
+.icon-dossier {
+  width: 32px; /* Ajuste pour la navbar (28px ou 35px) */
+  height: auto;
+  transform: rotate(-2deg);
+  overflow: hidden; 
+}
+
+/* --- LE MOTEUR DE L'ANIMATION --- */
+
+.feuille {
+  /* Un effet fluide avec un très léger rebond */
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.dossier-avant {
+  transform-origin: bottom center;
+  transition: transform 0.4s ease;
+}
+
+/* 1. L'ÉTAT PAR DÉFAUT (Fermé) */
+/* Quand on NE survole PAS le dossier, on pousse les feuilles vers le bas */
+/* Elles vont se cacher derrière la pochette bleue */
+.icon-dossier:not(:hover) .feuille-1 { transform: translateY(55px); }
+.icon-dossier:not(:hover) .feuille-2 { transform: translateY(45px); }
+.icon-dossier:not(:hover) .feuille-3 { transform: translateY(50px); }
+
+/* 2. L'ÉTAT AU SURVOL (Ouvert) */
+/* Les feuilles remontent à la position que tu as dessinée sur Figma */
+.gallery-open-btn:hover .feuille-1,
+.gallery-open-btn:hover .feuille-2,
+.gallery-open-btn:hover .feuille-3 {
+  transform: translateY(0);
+}
+
+/* Le clapet s'entrouvre légèrement pour laisser passer les feuilles */
+.gallery-open-btn:hover .dossier-avant {
+  transform: scaleY(0.96) translateY(2px);
+}
+
+/* Le texte change de couleur (Optionnel) */
+.gallery-open-btn:hover {
+  color: var(--pref-active-fill);
+}
+
+/* =========================================================
+   COULEURS DU DOSSIER (Mode Clair / Mode Sombre)
+   ========================================================= */
+
+/* Par défaut (Mode Clair) : Dossier Jaune */
+.dossier-arriere {
+  fill: #eab308; /* Un beau jaune doré pour le fond */
+  transition: fill 0.4s ease;
+}
+
+.dossier-avant-path {
+  fill: #fde047; /* Un jaune un peu plus vif et clair pour l'avant */
+  transition: fill 0.4s ease;
+}
+
+/* En Mode Sombre : Dossier Bleu (Les couleurs de ton Figma) */
+body.dark-theme .dossier-arriere {
+  fill: #2877B0;
+}
+
+body.dark-theme .dossier-avant-path {
+  fill: #75AFD8;
+}
+
+/* =========================================================
+   ANIMATION AJUSTÉE (Les feuilles ne dépassent plus en bas)
+   ========================================================= */
+
+/* On réduit fortement le translateY. 20px suffisent pour cacher
+   le haut des feuilles derrière le clapet bleu sans percer le fond ! */
+.icon-dossier:not(:hover) .feuille-1 { transform: translateY(20px); }
+.icon-dossier:not(:hover) .feuille-2 { transform: translateY(15px); }
+.icon-dossier:not(:hover) .feuille-3 { transform: translateY(18px); }
+
+.gallery-open-btn:hover .feuille-1,
+.gallery-open-btn:hover .feuille-2,
+.gallery-open-btn:hover .feuille-3 {
+  transform: translateY(0);
+}
+
+.gallery-open-btn:hover .dossier-avant {
+  transform: scaleY(0.96) translateY(2px);
+}
+
+/* =========================================================
+   FILTRES DE LA GALERIE
+   ========================================================= */
+.gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  color: var(--text);
+  flex-wrap: wrap; /* Permet aux éléments de passer à la ligne sur petit écran */
+  gap: 15px;
+}
+
+.gallery-filters {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.filter-select {
+  background: var(--btn-bg-box);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.filter-select:hover, .filter-select:focus {
+  border-color: var(--pref-active-fill);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme .filter-select {
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+}
+
+body.dark-theme .filter-select option {
+  background: #1e2c2b; /* Empêche les options d'être transparentes et illisibles */
+  color: #fff;
 }
