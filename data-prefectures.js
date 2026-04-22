@@ -362,15 +362,6 @@ const prefecture_INFOS = {
     desc: "Capitale gastronomique du Japon, Osaka est réputée pour son « kuidaore » — se ruiner en mangeant. Deuxième économie du pays, elle est une métropole exubérante et chaleureuse, dont l'humour populaire (osaka-ben) est célèbre dans tout l'archipel. Son château, le Dotonbori et le futur site de l'Exposition Universelle 2025 symbolisent une ville toujours en mouvement."
   },
 
-  "Ryūkyū": {
-    kanji: "琉球", hiragana: "りゅうきゅう",
-    capitale: "Naha", population: "1,466,000",
-    superficie: "2,281 km²", densite: "643 hab/km²",
-    pib: "4 700 Mds ¥", cuisine: "Chanpurū, Gōyā champuru, Sōki soba, Awamori",
-    villes: ["Naha", "Okinawa", "Uruma", "Ginowan"],
-    desc: "Archipel subtropical au sud-ouest du Japon, les îles Ryūkyū s'étendent sur plus de 1 000 km entre Kyūshū et Taïwan. Ancien royaume indépendant pendant plus de 450 ans, cet ensemble d'îles possède une culture, une langue et des traditions distinctes du reste du Japon. Ses eaux cristallines et ses récifs coralliens en font un paradis naturel unique."
-  },
-
   "Saga": {
     kanji: "佐賀", hiragana: "さが",
     capitale: "Saga", population: "788,000",
