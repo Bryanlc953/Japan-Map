@@ -8,13 +8,27 @@ const ryūkyūLayer      = document.getElementById('ryūkyūLayer');
 const btnRyūkyū        = document.querySelector('[data-super-ile-btn="Ryūkyū"]');
 const hoverLabel        = document.getElementById('prefecture-hover-label');
 const searchSuggestions = document.getElementById('search-suggestions');
-const navFiche          = document.querySelector('.fiche-navbar');
-const btnPrev           = document.getElementById('fiche-prev');
-const btnNext           = document.getElementById('fiche-next');
 
+
+// =========================================================
+//   ÉTAT
+// =========================================================
 const ordrePrefectures = Object.keys(prefecture_INFOS);
-let indexActuel    = null;
-let indexSuggestion = -1;
+let indexActuel        = null;
+let indexSuggestion    = -1;
+
+const ordreRegions = [
+  'region-Hokkaidō',
+  'region-Tōhoku',
+  'region-Kantō',
+  'region-Chūbu',
+  'region-Kansai',
+  'region-Chūgoku',
+  'region-Shikoku',
+  'region-Kyūshū'
+];
+let indexRegionActuel = null;
+let navigationBloquee = false;
 
 // =========================================================
 //   UTILITAIRES
@@ -23,20 +37,18 @@ let indexSuggestion = -1;
 function setFicheMode(actif, modeRegion = false) {
   document.body.classList.toggle('fiche-mode', actif);
   document.body.classList.toggle('region-active-mode', actif && modeRegion);
-  navFiche.style.display = (actif && !modeRegion) ? 'flex' : 'none';
   document.documentElement.style.overflowY = actif ? 'auto' : '';
   document.body.style.overflowY             = actif ? 'auto' : '';
 }
 
+
 function nettoyerTouteLaCarte() {
-  // Pas de protection deselecting — on nettoie tout sans condition
   document.querySelectorAll('.prefecture').forEach(p => {
     p.classList.remove('selected', 'superile-highlight', 'illumine', 'active-prefecture', 'deselecting');
   });
   document.querySelectorAll('.big-btn, .region-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.region-svg-group').forEach(g => g.classList.remove('is-active-region'));
   carteContainer.classList.remove('ryūkyū-zoom');
-  // Ryūkyū reste toujours visible
 }
 
 // =========================================================
@@ -49,12 +61,9 @@ function ouvrirFiche(prefectureId) {
 
   nettoyerTouteLaCarte();
   indexActuel = ordrePrefectures.indexOf(prefectureId);
-
-  // Allumer la préfecture sur la mini-carte
   document.querySelectorAll(`.prefecture[data-prefecture="${prefectureId}"]`)
     .forEach(p => p.classList.add('active-prefecture'));
 
-  // Remplir les champs
   document.getElementById('ficheTitre').textContent = `${info.kanji} — ${info.romaji}`;
   document.getElementById('ficheTexte').textContent = info.desc;
 
@@ -63,9 +72,9 @@ function ouvrirFiche(prefectureId) {
     elemCap.previousElementSibling.textContent = 'CAPITALE';
     elemCap.textContent = info.capitale || 'N/A';
   }
+
   document.getElementById('fichePop').textContent = info.population || 'N/A';
 
-  // Villes principales
   const villesListe = document.getElementById('ficheVilles');
   const villesBloc  = document.getElementById('ficheVillesBloc');
   if (villesListe) {
@@ -85,12 +94,6 @@ function ouvrirFiche(prefectureId) {
   imgDrapeau.src = `flags/${prefectureId}.svg`;
   imgDrapeau.style.display = 'block';
 
-  // Compteur navigation
-  document.getElementById('compteur-actuel').textContent = indexActuel + 1;
-  document.getElementById('compteur-total').textContent  = ordrePrefectures.length;
-  btnPrev.disabled = indexActuel === 0;
-  btnNext.disabled = indexActuel === ordrePrefectures.length - 1;
-
   setFicheMode(true);
   carteContainer.classList.add('minimized');
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -105,6 +108,8 @@ function remplirFicheRegion(idRegion) {
 
   const info = region_INFOS[idRegion];
   if (!info) return;
+
+  indexRegionActuel = ordreRegions.indexOf(idRegion);
 
   document.getElementById('ficheTitre').textContent = `${info.nomKanji} — ${info.nomRomaji}`;
   document.getElementById('ficheTexte').textContent = info.desc;
@@ -121,16 +126,11 @@ function remplirFicheRegion(idRegion) {
   const elemPop = document.getElementById('fichePop');
   if (elemPop) elemPop.textContent = info.pop;
 
-  // Pas de villes ni drapeau en mode région
   const villesBloc = document.getElementById('ficheVillesBloc');
   if (villesBloc) villesBloc.style.display = 'none';
 
   const drapeau = document.querySelector('#prefecture-drapeau');
   if (drapeau) drapeau.style.display = 'none';
-
-  document.querySelectorAll('.top-region-btn').forEach(b => {
-    b.classList.toggle('active', b.getAttribute('data-target-region') === idRegion);
-  });
 
   setFicheMode(true, true);
   carteContainer.classList.add('minimized');
@@ -155,16 +155,17 @@ function activerRegion(idRegion) {
 }
 
 // =========================================================
-//   NAVIGATION ENTRE FICHES (avec animation villes)
+//   TRANSITIONS ANIMÉES
 // =========================================================
 
 function transitionVersFiche(nouvelIndex) {
+  if (navigationBloquee) return;
+  navigationBloquee = true;
+
   const elementsAAnimer = document.querySelectorAll(
     '#ficheTitre, #prefecture-drapeau, .stats-grid, #ficheTexte, #pref-portrait-container, #ficheVillesBloc'
   );
 
-  btnPrev.style.pointerEvents = 'none';
-  btnNext.style.pointerEvents = 'none';
   elementsAAnimer.forEach(el => el.classList.add('fiche-transition-out'));
 
   setTimeout(() => {
@@ -175,38 +176,75 @@ function transitionVersFiche(nouvelIndex) {
       el.style.animation = null;
       el.classList.remove('fiche-transition-out');
     });
-    btnPrev.style.pointerEvents = 'auto';
-    btnNext.style.pointerEvents = 'auto';
+    navigationBloquee = false;
+  }, 200);
+}
+
+function transitionVersRegion(nouvelIndex) {
+  if (navigationBloquee) return;
+  navigationBloquee = true;
+
+  const elementsAAnimer = document.querySelectorAll(
+    '#ficheTitre, .stats-grid, #ficheTexte'
+  );
+
+  elementsAAnimer.forEach(el => el.classList.add('fiche-transition-out'));
+
+  setTimeout(() => {
+    activerRegion(ordreRegions[nouvelIndex]);
+    elementsAAnimer.forEach(el => {
+      el.style.animation = 'none';
+      el.offsetHeight; // reflow
+      el.style.animation = null;
+      el.classList.remove('fiche-transition-out');
+    });
+    navigationBloquee = false;
   }, 200);
 }
 
 // =========================================================
-//   ÉVÉNEMENTS — NAVIGATION FICHES
+//   NAVIGATION CLAVIER — flèches + Escape
+//   Séparé : mode fiche-préfecture vs mode région
 // =========================================================
-
-btnPrev.addEventListener('click', e => {
-  e.stopPropagation();
-  if (indexActuel > 0) transitionVersFiche(indexActuel - 1);
-});
-
-btnNext.addEventListener('click', e => {
-  e.stopPropagation();
-  if (indexActuel < ordrePrefectures.length - 1) transitionVersFiche(indexActuel + 1);
-});
 
 document.addEventListener('keydown', e => {
   if (!document.body.classList.contains('fiche-mode')) return;
-  if      (e.key === 'ArrowLeft'  && indexActuel > 0)                              transitionVersFiche(indexActuel - 1);
-  else if (e.key === 'ArrowRight' && indexActuel < ordrePrefectures.length - 1)    transitionVersFiche(indexActuel + 1);
-  else if (e.key === 'Escape')  document.getElementById('retourCarte').click();
+  if (document.activeElement === searchInput) return;
+
+  const isRegionMode = document.body.classList.contains('region-active-mode');
+
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    document.getElementById('retourCarte').click();
+    return;
+  }
+
+  if (isRegionMode) {
+    // Navigation entre régions
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (indexRegionActuel > 0) transitionVersRegion(indexRegionActuel - 1);
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (indexRegionActuel < ordreRegions.length - 1) transitionVersRegion(indexRegionActuel + 1);
+    }
+  } else {
+    // Navigation entre préfectures
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (indexActuel > 0) transitionVersFiche(indexActuel - 1);
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (indexActuel < ordrePrefectures.length - 1) transitionVersFiche(indexActuel + 1);
+    }
+  }
 });
 
 // =========================================================
-//   ÉVÉNEMENTS — RETOUR CARTE
+//   RETOUR CARTE
 // =========================================================
 
 document.getElementById('retourCarte').addEventListener('click', () => {
-  // Animation de déselection sur la préfecture active
   const prefActive = document.querySelector('.prefecture.active-prefecture');
   if (prefActive) {
     prefActive.classList.add('deselecting');
@@ -220,10 +258,12 @@ document.getElementById('retourCarte').addEventListener('click', () => {
   carteContainer.classList.remove('minimized', 'ryūkyū-zoom');
   btnRyūkyū.classList.remove('active');
   nettoyerTouteLaCarte();
+  indexActuel = null;
+  indexRegionActuel = null;
 });
 
 // =========================================================
-//   ÉVÉNEMENTS — BOUTONS RÉGIONS (dock droit)
+//   BOUTONS RÉGIONS (dock droit)
 // =========================================================
 
 document.querySelectorAll('.region-btn').forEach(btn => {
@@ -237,7 +277,7 @@ document.querySelectorAll('.region-btn').forEach(btn => {
 });
 
 // =========================================================
-//   ÉVÉNEMENTS — BOUTONS ÎLES (dock droit)
+//   BOUTONS ÎLES (dock droit)
 // =========================================================
 
 document.querySelectorAll('.big-btn').forEach(btn => {
@@ -264,18 +304,7 @@ document.querySelectorAll('.big-btn').forEach(btn => {
 });
 
 // =========================================================
-//   ÉVÉNEMENTS — BARRE HAUTE DES RÉGIONS
-// =========================================================
-
-document.querySelectorAll('.top-region-btn').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.stopPropagation();
-    activerRegion(btn.getAttribute('data-target-region'));
-  });
-});
-
-// =========================================================
-//   ÉVÉNEMENTS — CLIC SUR GROUPE RÉGION (carte SVG)
+//   CLIC SUR GROUPE RÉGION (carte SVG)
 // =========================================================
 
 document.querySelectorAll('.region-svg-group').forEach(group => {
@@ -287,7 +316,7 @@ document.querySelectorAll('.region-svg-group').forEach(group => {
 });
 
 // =========================================================
-//   ÉVÉNEMENTS — PRÉFECTURES (carte SVG)
+//   PRÉFECTURES (carte SVG)
 // =========================================================
 
 document.querySelectorAll('.prefecture').forEach(el => {
@@ -322,9 +351,7 @@ document.querySelectorAll('.prefecture').forEach(el => {
 });
 
 // =========================================================
-//   ÉVÉNEMENTS — CLIC EXTÉRIEUR (désélection)
-//   Sélecteurs corrigés : .dock-navigation-carte au lieu de
-//   .boutons-iles / .boutons-regions qui n'existent pas
+//   CLIC EXTÉRIEUR (désélection)
 // =========================================================
 
 document.addEventListener('click', e => {
@@ -418,3 +445,21 @@ document.addEventListener('click', e => {
 document.getElementById('nightModeToggle').addEventListener('change', () => {
   document.body.classList.toggle('dark-theme');
 });
+
+
+// =========================================================
+//   HEURE LOCALE DU JAPON (JST = UTC+9)
+// =========================================================
+
+function mettreAJourHeureJapon() {
+  const el = document.getElementById('heureJapon');
+  if (!el) return;
+  el.textContent = new Date().toLocaleTimeString('fr-FR', {
+    timeZone: 'Asia/Tokyo',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+setInterval(mettreAJourHeureJapon, 1000);
+mettreAJourHeureJapon();
