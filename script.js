@@ -465,3 +465,118 @@ function mettreAJourHeureJapon() {
 
 setInterval(mettreAJourHeureJapon, 1000);
 mettreAJourHeureJapon();
+
+// =========================================================
+//   GALERIE DES PRÉFECTURES ET FILTRES
+// =========================================================
+
+// On récupère les éléments (sans planter s'ils n'existent pas encore)
+const galleryModal = document.getElementById('galleryModal');
+const galleryGrid = document.getElementById('galleryGrid');
+const btnOuvrirGalerie = document.getElementById('btnOuvrirGalerie');
+const closeGalleryBtn = document.getElementById('closeGallery');
+const sortSelect = document.getElementById('sortGallery');
+
+// 1. Fonction magique pour transformer "7,5 millions" en vrai nombre (7500000)
+function extraireNombrePopulation(popString) {
+  if (!popString) return 0;
+  let str = String(popString).toLowerCase().replace(/\s/g, '');
+  let estEnMillions = str.includes('million') || str.includes('m');
+  
+  let numStr = str.replace(/[^0-9.,]/g, '').replace(',', '.');
+  let num = parseFloat(numStr);
+  
+  if (isNaN(num)) return 0;
+  return estEnMillions ? num * 1000000 : num;
+}
+
+// 2. Générer les cartes
+function genererGalerie(listeIds = ordrePrefectures) {
+  if (!galleryGrid) return; // Sécurité
+  galleryGrid.innerHTML = ''; 
+  
+  listeIds.forEach(id => {
+    const info = prefecture_INFOS[id]; 
+    if (!info) return; // Sécurité si l'ID n'existe pas dans les infos
+
+    const card = document.createElement('div');
+    card.className = 'gallery-card';
+    
+    card.innerHTML = `
+      <img src="flags/${id}.svg" alt="Drapeau ${info.nom}" class="gallery-flag" onerror="this.src='flags/default.svg'">
+      <div class="gallery-name">${id}</div>
+      <div class="gallery-pop">👥 ${info.population || 'Inconnue'}</div>
+      <button class="gallery-btn" onclick="voirDepuisGalerie('${id}')">Voir sur la carte</button>
+    `;
+    galleryGrid.appendChild(card);
+  });
+}
+
+// 3. Trier les données (CORRIGÉ)
+function trierGalerie() {
+  if (!sortSelect) {
+    genererGalerie(ordrePrefectures); 
+    return;
+  }
+
+  const critere = sortSelect.value;
+  let listeTriee = [...ordrePrefectures];
+
+  if (critere === 'az') {
+    // On trie directement avec les clés a et b (qui sont les noms)
+    listeTriee.sort((a, b) => a.localeCompare(b));
+  } 
+  else if (critere === 'za') {
+    // Inversement
+    listeTriee.sort((a, b) => b.localeCompare(a));
+  } 
+  else if (critere === 'pop-desc') {
+    // Sécurité : on vérifie que la population existe bien pour éviter les crashs
+    listeTriee.sort((a, b) => {
+      let popA = prefecture_INFOS[a].population || '0';
+      let popB = prefecture_INFOS[b].population || '0';
+      return extraireNombrePopulation(popB) - extraireNombrePopulation(popA);
+    });
+  } 
+  else if (critere === 'pop-asc') {
+    listeTriee.sort((a, b) => {
+      let popA = prefecture_INFOS[a].population || '0';
+      let popB = prefecture_INFOS[b].population || '0';
+      return extraireNombrePopulation(popA) - extraireNombrePopulation(popB);
+    });
+  }
+
+  genererGalerie(listeTriee);
+}
+
+// 4. Écouteurs d'événements avec sécurités
+if (sortSelect) {
+  sortSelect.addEventListener('change', trierGalerie);
+}
+
+if (btnOuvrirGalerie && galleryModal) {
+  btnOuvrirGalerie.addEventListener('click', () => {
+    trierGalerie(); 
+    galleryModal.classList.add('active');
+  });
+}
+
+if (closeGalleryBtn && galleryModal) {
+  closeGalleryBtn.addEventListener('click', () => {
+    galleryModal.classList.remove('active');
+  });
+}
+
+if (galleryModal) {
+  galleryModal.addEventListener('click', (e) => {
+    if (e.target === galleryModal) {
+      galleryModal.classList.remove('active');
+    }
+  });
+}
+
+// Fonction globale appelée par le bouton "Voir sur la carte"
+window.voirDepuisGalerie = function(id) {
+  if (galleryModal) galleryModal.classList.remove('active');
+  if (typeof ouvrirFiche === 'function') ouvrirFiche(id);
+};
