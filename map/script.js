@@ -91,7 +91,7 @@ function ouvrirFiche(prefectureId) {
   if (stats) stats.style.display = 'grid';
 
   const imgDrapeau = document.getElementById('prefecture-drapeau');
-  imgDrapeau.src = `../drapeaux/${prefectureId}.svg`;
+  imgDrapeau.src = `../flag/${prefectureId}.svg`;
   imgDrapeau.style.display = 'block';
 
   setFicheMode(true);
@@ -388,7 +388,7 @@ searchInput.addEventListener('input', e => {
       const li   = document.createElement('li');
       li.classList.add('suggestion-item');
       li.innerHTML = `
-        <img src="../drapeaux/${id}.svg" alt="Drapeau ${info.romaji}" class="sugg-flag">
+        <img src="../flag/${id}.svg" alt="Drapeau ${info.romaji}" class="sugg-flag">
         <span>${info.romaji}</span>
       `;
       li.addEventListener('click', () => {
