@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Ma Carte Interactive</title>
-  <link rel="stylesheet" href="landing-style.css">
-  <link rel="stylesheet" href="style25.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="map/style.css">
   <link rel="stylesheet" href="cours/cours-style.css">
   <!-- À rajouter dans la balise <head> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -998,7 +998,7 @@
                     
                     <!-- 1. LE SVG D'ANIMATION ET DE GUIDE EN ARRIÈRE-PLAN -->
                     <div id="svg-animation-wrapper">
-                        <!-- Laisse cet espace vide ! Le JavaScript va injecter le SVG ici automatiquement -->
+                        <!-- C'est ici que tu colles le code <svg>...</svg> du fichier あ.svg trouvé sur GitHub -->
                     </div>
 
                     <!-- 2. LE CANVAS DE DESSIN AU PREMIER PLAN -->
@@ -1008,10 +1008,10 @@
                 <!-- Boutons de contrôle sous le canvas -->
                 <div class="canvas-controls">
                     <button class="btn-rejouer-mini" onclick="rejouerAnimationSVG()">
-                      Revoir l'ordre
+                        🔄 Revoir l'ordre
                     </button>
                     <button class="btn-rejouer-mini" onclick="effacerCanvas()">
-                      Effacer
+                        🗑️ Effacer
                     </button>
                 </div>
                 
@@ -1023,11 +1023,11 @@
 
 
 
-<script src="data-prefectures.js"></script>
-<script src="landing-script.js"></script>
-<script src="script25.js"></script>
+<script src="data/data-prefectures.js"></script>
+<script src="script.js"></script>
+<script src="map/script.js"></script>
 <script src="cours/cours-script.js"></script>
-<script src="cours/data-cours.js"></script>
+<script src="data/data-cours.js"></script>
 
 </body>
 </html>

@@ -1,1298 +1,755 @@
 /* =========================================================
-   POLICES
-   ========================================================= */
-@font-face {
-  font-family: 'Funnelsans';
-  src: url('../font/Funnelsans.ttf') format('regular');
-}
-/* =========================================================
-   VARIABLES — THÈME CLAIR (défaut)
+   THÈME PAR DÉFAUT (LIGHT MODE)
    ========================================================= */
 :root {
-  /* Couleurs de base */
-  --bg:             #f0faf9;
-  --text:           #1e2c2b;
-  --text-muted:     #547c79;
-  --card-bg:        #f1fffe;
+/*Hero Landing*/
+    --primary-color: #bc002d; /* Rouge emblématique */
+    --secondary-color: #f7f5f0; /* Crème traditionnelle */
+    --hero-landing-gradient: linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 1) 100%);
+    --arrow-color: #000000; /* Couleur de la flèche de scroll */
+/* Section Apprentissage */
+    --background-color1: #ffffff; /* Fond blanc */
+    --hiragana-color: rgba(0, 0, 0, 0.04); /* Noir très très transparent pour le filigrane */
+    --text-p: #4a4a4a;
 
-  /* Préfectures */
-  --pref-fill:          #a1c48d;
-  --pref-stroke:        #f1fff6;
-  --pref-hover-fill:    #719947;
-  --pref-hover-stroke:  #f1fff6;
-  --pref-active-fill:   #537e26;
-  --pref-active-stroke: #f1fff6;
-
-  /* Étiquette survol */
-  --label-text: #59706f;
-  --label-bg:   #e4f8f6a9;
-
-  /* Boutons */
-  --btn-bg-box:    #def3f134;
-  --btn-shadow-1:  2px 6px 18px #0001;
-  --btn-border:    1.5px solid #ffffff;
-  --btn-bg:        #8f6b36;
-  --btn-text:      #1e2c2b;
-  --btn-shadow-2:  1px 2px 8px #2221;
-  --btn-hover-bg:  #dff7f4;
-  --btn-active-bg: #d0f7f3;
-  --btn-active-text:   #aa8e5e;
-  --btn-active-border: #e7d5b2;
-
-  /* Bouton retour carte */
-  --retour-circle:      #ffffffbd;
-  --retour-circle-hover:#ffffffbd;
-  --retour-arrow:       #1e2c2b;
-  --retour-text:        #1e2c2b;
-
-  /* Drapeau */
-  --flag-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  --flag-border: 1px solid #ddd;
-
-  /* Navbar */
-  --nav-bg:     #ffffff49;
-  --nav-border: 1px solid #ffffff00;
-  --nav-shadow: 0px 4px 15px #0001, 2px 6px 18px #0001;
-  --nav-pill-bg:#f5f5f5;
-  --nav-counter:#1e2c2b;
-  --nav-arrows: #1e2c2b;
-
-  /* Recherche */
-  --search-icon:        #1e2c2b;
-  --search-text:        #1e2c2b;
-  --search-input-color: #3f3f3fea;
-  --sugg-hover-bg:      #def3f1;
-  --sugg-text:          #1e2c2b;
-
-  /* Toggle sombre */
-  --toggle-bg:     linear-gradient(to right, #efefef 50%, #2a2a2a 50%) no-repeat;
-  --toggle-border: 1px solid rgba(133,133,133,0.479);
-  --toggle-circle: linear-gradient(to right, #efefef 50%, #0A0E15 50%) no-repeat;
-
-  /* Heure */
-  --heure-border: 1px solid #ffffff52;
-  --heure-bg: #ffffff8f; 
-  --texte-heure: #1e2c2b;
-
-  /* Galerie */
-  --background-gallery: #ffffff9a;
+/* Section Découverte */    
+    --background-color2: #f7f5f0; /* Fond crème */
+    --text-h2: #2c3e50; /* Texte principal sombre */
+    --header-background: rgba(255, 255, 255, 0.15); /* Fond semi-transparent pour le header */
+    --header-text-color: white; /* Texte du header en blanc par défaut */
+    --button-hover-opacity: 0.8; /* Opacité au survol des boutons */
+    --box-shadow-color: rgba(0, 0, 0, 0.05); /* Ombre légère pour les boîtes */
 }
 
 /* =========================================================
-   VARIABLES — THÈME SOMBRE
+   THÈME SOMBRE (DARK MODE)
    ========================================================= */
 body.dark-theme {
-  --bg:         #0A0E15;
-  --text:       #f5ebd9;
-  --text-muted: #d4d6d4;
-  --card-bg:    #0709317c;
+/*Hero Landing*/
+    --bg-primary: #121212;          /* Fond sombre profond */
+    --bg-secondary: #1a202c;        /* Fond sombre intermédiaire */
+    --text-color-1: #f7f5f0; /* Texte principal clair */
+    --bg-card: #2d3748;             /* Cartes plus claires pour ressortir */
+    --hero-landing-gradient: linear-gradient(to bottom, rgba(255, 255, 255, 0) 60%, #2c3e50 100%);
+    --arrow-color: #ffffff; /* Couleur de la flèche de scroll */
 
-  --pref-fill:          #78A1E2;
-  --pref-stroke:        #ffffff;
-  --pref-hover-fill:    #3d6db9;
-  --pref-hover-stroke:  #ffffff;
-  --pref-active-fill:   #3d6db9;
-  --pref-active-stroke: #ffffff;
 
-  --label-text: #696b9e;
-  --label-bg:   #a9bbd6;
+/* Section Apprentissage */
+    --background-color1: #2c3e50; /* Fond sombre */
+    --hiragana-color: rgba(255, 255, 255, 0.04); /* Noir très très transparent pour le filigrane */
+    --text-p: #e2e8f0; /* Texte clair pour le paragraphe */
 
-  --btn-bg-box:    #ffffff17;
-  --btn-shadow-1:  1px 1px 10px #fdfcfc2d;
-  --btn-border:    1.5px solid #ffffff;
-  --btn-bg:        #374158;
-  --btn-text:      #f5ebd9;
-  --btn-shadow-2:  1px 2px 8px #fdfcfc2d;
-  --btn-hover-bg:  #421fc288;
-  --btn-active-bg: #4317e2;
-  --btn-active-text:   #f5ebd9;
-  --btn-active-border: #888;
+/* Section Découverte */        
+    --background-color2: #1f282e; /* Fond sombre intermédiaire */
+    --text-h2: #f7f5f0; /* Texte principal sombre */
 
-  --retour-circle:       #f5ebd9;
-  --retour-circle-hover: #f5ebd9;
-  --retour-arrow: #0A0E15;
-  --retour-text:  #0A0E15;
+    --text-main: #f7fafc;           /* Texte blanc cassé pour ne pas agresser les yeux */
+    --text-muted: #cbd5e1;          /* Descriptifs gris clair */
+    --border-color: rgba(255, 255, 255, 0.1);
+    
+    --pill-bg: rgba(0, 0, 0, 0.3);  /* Pilules un peu plus sombres */
+}
 
-  --flag-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  --flag-border: 1px solid #ddd;
 
-  --nav-bg:     #2b2b2b75;
-  --nav-border: 1px solid #ffffff2f;
-  --nav-shadow: 0 4px 15px rgba(0,0,0,0.5);
-  --nav-pill-bg:#3d3d3d;
-  --nav-counter:#f5ebd9;
-  --nav-arrows: #f5ebd9;
 
-  --search-icon:        #f5ebd9;
-  --search-text:        #f5ebd9;
-  --search-input-color: #ffffffea;
-  --sugg-hover-bg:      #78a1e248;
-  --sugg-text:          #ffffff;
+/* =========================================================
+   HEADER TOP (Hamburger & Pilule)
+   ========================================================= */
+.landing-top-header {
+    position: fixed; /* Reste fixé en haut pendant le scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    box-sizing: border-box;
+    z-index: 100000; /* Passe au-dessus du rideau landing (qui est à 99999) */
+    pointer-events: none; /* Laisse passer les clics au scroll, sauf sur les boutons */
+}
 
-  /* Heure */
-  --heure-border: 1px solid #ffffff41;
-  --heure-bg: #30303046; 
-  --texte-heure: #f5ebd9;
+/* On réactive les clics uniquement sur les pilules */
+.header-hamburger-pill, 
+.header-controls-pill {
+    pointer-events: auto;
+}
 
-   /* Galerie */
-  --background-gallery: #0709317c;
+/* --- Style commun pour les deux Pilules (Gauche et Droite) --- */
+.header-hamburger-pill,
+.header-controls-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.15); /* Fond semi-transparent */
+    backdrop-filter: blur(12px); /* Effet flou iOS */
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 30px;
+    padding: 6px 14px;
+    height: 44px; /* Hauteur identique pour les deux pilules */
+    box-sizing: border-box;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Adaptation automatique pour les sections blanches au scroll */
+/* Quand le header survole une zone claire, le texte et les icônes deviennent sombres */
+@media (prefers-color-scheme: light) {
+    /* Si tu veux forcer le changement au scroll sans JS, 
+       on utilise 'mix-blend-mode' pour que les boutons s'adaptent au fond ! */
+}
+
+/* --- Bouton Hamburger Ajusté --- */
+.hamburger-btn {
+    background: transparent;
+    border: none;
+    color: white; 
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.hamburger-btn svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.hamburger-btn:hover {
+    transform: scale(1.08);
+    opacity: 0.8;
 }
 
 /* =========================================================
-   RESET & BASE
+   SIDEBAR MENU (GLISSEMENT DEPUIS LA GAUCHE)
    ========================================================= */
-html, body {
-  margin: 0;
-  width: 100%;
-  overflow-x: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+
+/* Voile d'arrière-plan semi-transparent */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 199999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: auto; /* Active les clics sur le fond */
 }
-html::-webkit-scrollbar,
-body::-webkit-scrollbar { display: none; width: 0 !important; height: 0 !important; }
 
-html:not(.fiche-mode),
-body:not(.fiche-mode) { overflow-y: hidden; }
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
 
-body.page {
-margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  font-family: 'Funnelsans', sans-serif;
-  color: var(--text);
-  background-color: var(--bg);
-  transition: background-color 0.5s ease, color 0.5s ease;
-  
-  /* Le strict minimum pour retenir nos calques SVG, sans casser ton layout */
-  position: relative;
-  z-index: 0;
+/* Le conteneur du menu latéral */
+.sidebar-menu {
+    position: fixed;
+    top: 0;
+    left: -300px; /* Caché par défaut à gauche de l'écran */
+    width: 280px;
+    height: 100vh;
+    background: #ffffff;
+    box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+    z-index: 200000;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    pointer-events: auto; /* Permet l'interaction à l'intérieur */
+}
+
+/* Quand la classe active est ajoutée, le menu glisse vers la droite */
+.sidebar-menu.active {
+    transform: translateX(300px); 
+}
+
+/* Haut de la sidebar */
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.sidebar-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #1a202c;
+}
+
+.sidebar-close-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #a0aec0;
+    line-height: 1;
+    padding: 0;
+}
+
+.sidebar-close-btn:hover {
+    color: #bc002d;
+}
+
+/* Contenu et éléments du menu */
+.sidebar-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Ligne avec le switch */
+.menu-item-switch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.switch-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #4a5568;
+}
+
+/* --- LE TOGGLE SWITCH DESIGN --- */
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #cbd5e1;
+    transition: .3s;
+    border-radius: 34px;
+}
+
+.switch-slider::before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+input:checked + .switch-slider {
+    background-color: #bc002d; /* Rouge quand activé */
+}
+
+input:checked + .switch-slider::before {
+    transform: translateX(24px);
 }
 
 /* =========================================================
-   CALQUES DE FOND (LIGHT & DARK)
+   HEADER TOP (Langue & Connexion)
    ========================================================= */
 
-/* CALQUE 1 : Le SVG Clair (toujours au fond) */
-body.page::before {
-  content: "";
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  z-index: -2; /* Tout au fond */
-  
-  background-image: url('Background.svg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+/* --- Reste des éléments (Inchangés mais nettoyés) --- */
+.pill-separator {
+    width: 1px;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.3);
 }
 
-/* CALQUE 2 : Le SVG Sombre (invisible par défaut, juste au-dessus du clair) */
-body.page::after {
-  content: "";
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  z-index: -1; /* Au-dessus du clair, mais sous ton site */
-  
-  background-image: url('Background-Dark.svg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  
-  /* La magie du fondu */
-  opacity: 0; 
-  transition: opacity 0.5s ease;
+.lang-btn, .login-toggle-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
 }
 
-/* L'activation du fondu quand on clique sur le bouton sombre */
-body.dark-theme::after {
-  opacity: 1;
+.login-toggle-btn svg {
+    width: 22px;
+    height: 22px;
 }
 
-body.fiche-mode {
-  overflow-y: auto !important;
-  height: auto !important;
+.lang-btn:hover, .login-toggle-btn:hover {
+    opacity: 0.7;
 }
+
+/* Formulaire de connexion */
+.login-wrapper {
+    position: relative;
+}
+
+.login-dropdown {
+    position: absolute;
+    top: 48px;
+    right: -10px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.login-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.login-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    outline: none;
+    background: #f8fafc;
+}
+
+.login-input:focus {
+    border-color: #bc002d;
+    background: #ffffff;
+}
+
+.login-submit-btn {
+    background: #bc002d;
+    color: white;
+    border: none;
+    padding: 11px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.login-submit-btn:hover {
+    background: #8a0021;
+}
+/* =========================================================
+   LANDING PAGE (FORMAT HORIZONTAL / SCROLL EN SÉQUENCE)
+   ========================================================= */
+#landing-page-intro {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999; 
+    background-color: #ffffff;
+    overflow-y: auto; /* Active le défilement vertical interne au rideau */
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 1. SECTION IMAGE DE FOND (HERO) */
+.hero-landing {
+    height: 100vh;
+    /* Le dégradé linéaire part de transparent et devient blanc pur à 100% pour fusionner avec le Monde 1 */
+    background:var(--hero-landing-gradient),
+                url('assets/Main\ image\ 3.png') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    color: white;
+    text-shadow: 2px 2px 15px rgba(0,0,0,0.7);
+    margin: 0 0 15px 0;
+    font-weight: 800;
+}
+
+.hero-content p {
+    font-size: 1.4rem;
+    color: white;
+    text-shadow: 1px 1px 8px rgba(0,0,0,0.7);
+    margin: 0;
+    max-width: 600px;
+}
+
+/* 2. PROPRIÉTÉS DES MONDES (SECTIONS) */
+.section-landing {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 20px;
+    box-sizing: border-box;
+}
+
+.section-container {
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+}
+
+.section-landing h2 {
+    font-size: 3rem;
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+.section-description {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    color: var(--text-color-1);
+    margin-bottom: 40px;
+}
+
+/* --- MONDE 1 : FOND BLANC --- */
+.monde-apprentissage {
+    background-color: var(--background-color1);
+    color: #111111;
+    position: relative; /* Indispensable pour contenir le texte absolu */
+    overflow: hidden; /* Coupe le texte s'il dépasse de l'écran */
+}
+.monde-apprentissage::before {
+    content: "ひらがな"; /* Le mot en hiragana */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centre parfaitement le texte */
+    font-size: 28vw; /* Une taille relative à la largeur de l'écran (énorme) */
+    font-weight: 900;
+    color: var(--hiragana-color); /* Noir avec 4% d'opacité, très subtil */
+    z-index: 0; /* Reste en dessous du contenu */
+    white-space: nowrap; /* Empêche le mot de passer à la ligne */
+    user-select: none; /* Empêche l'utilisateur de sélectionner ce texte de fond */
+    font-family: 'Noto Sans JP', sans-serif; /* Une police japonaise propre (recommandé) */
+}
+
+/* Sécurisation du texte au premier plan */
+.monde-apprentissage .section-container {
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+    position: relative; 
+    z-index: 1; /* Assure que le texte et les boutons restent par-dessus et cliquables */
+}
+
+.monde-apprentissage h2 {
+    color: #bc002d; /* Le rouge emblématique */
+}
+
+/* Boîte de prévisualisation Ebook / Cours */
+.preview-box {
+    background: #fafafa;
+    border: 1px dashed #bc002d;
+    border-radius: 12px;
+    padding: 30px;
+    margin: 0 auto 40px auto;
+    max-width: 600px;
+    text-align: left;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
+}
+
+.preview-badge {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: #bc002d;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.preview-box h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 1.3rem;
+}
+
+.preview-box p {
+    margin: 0;
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* --- SÉPARATION ZEN MINI-MALISTE --- */
+.monde-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    background: transparent;
+}
+
+.monde-separator .line {
+    height: 1px;
+    flex-grow: 1;
+    background: linear-gradient(to right, rgba(188,0,45,0), rgba(188,0,45,0.25), rgba(188,0,45,0));
+}
+
+.monde-separator .dot {
+    width: 8px;
+    height: 8px;
+    background-color: #bc002d;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #bc002d66;
+}
+
+/* --- MONDE 2 : FOND CRÈME TRADITIONNEL --- */
+.monde-decouverte {
+    background-color: var(--background-color2); /* cite: 2 */
+    color: #1a1a1a; /* cite: 2 */
+    position: relative; /* Indispensable pour le pseudo-élément */
+    overflow: hidden; /* Empêche le filigrane de déborder */
+}
+
+/* LE FILIGRANE CARTE DU JAPON */
+.monde-decouverte::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 1%; /* On décale la carte sur la droite pour un effet de design asymétrique */
+    transform: translateY(-50%);
+    width: 600px;
+    height: 800px;
+    /* Remplace 'map-silhouette.svg' par le chemin d'une image SVG de la forme du Japon (tu peux utiliser une version simplifiée de ton SVG principal) */
+    background: url('assets/map-silhouette.svg') no-repeat center center; 
+    background-size: contain;
+    opacity: 0.8; /* Noir très très transparent */
+    z-index: 0;
+    pointer-events: none; /* Empêche l'image de bloquer les clics */
+}
+
+/* Sécurisation du contenu par-dessus le filigrane */
+.monde-decouverte .section-container {
+    position: relative;
+    z-index: 1;
+}
+
+.monde-decouverte h2 {
+    color: var(--text-h2); /* Texte principal sombre */
+}
+
+/* Style pour l'accroche de transition */
+.section-subtitle {
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.6;
+    color: #bc002d; /* On utilise le rouge pour marquer la transition culturelle */
+    max-width: 700px;
+    margin: 0 auto 25px auto;
+}
+
+/* Ajustement de la description pour qu'elle reste fluide en dessous */
+.section-description {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--text-color-1);
+    max-width: 750px;
+    margin: 0 auto 40px auto;
+}
+
+/* Sécurisation du contenu par-dessus le filigrane */
+.monde-decouverte .section-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- STYLE DE LA NOUVELLE GRILLE --- */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin: 40px 0 50px 0;
+    text-align: center;
+}
+
+.feature-card {
+    background: #ffffff;
+    padding: 25px 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.feature-card h4 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
+
+.feature-card p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* 3. STYLE DES BOUTONS DE LA LANDING */
+.btn-landing {
+    display: inline-block;
+    padding: 16px 45px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.btn-rouge {
+    background-color: #bc002d;
+    color: white;
+}
+
+.btn-rouge:hover {
+    background-color: #8a0021;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(188, 0, 45, 0.25);
+}
+
+.btn-noir {
+    background-color: #ffffff;
+    color: #333333;
+}
+
+.btn-noir:hover {
+    background-color: #f1f1f1;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
 
 /* =========================================================
-   MISE EN PAGE PRINCIPALE
+   ANIMATION "ASCENSEUR" (LANDING + CARTE)
    ========================================================= */
+
+/* On évite l'apparition d'une barre de défilement géante pendant l'animation */
+body {
+    overflow: hidden; 
+}
+
+/* On retire l'effet de transparence pour que la page reste "solide" en montant */
+#landing-page-intro {
+    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1) !important;
+    opacity: 1 !important; 
+}
+
+/* La carte interactive */
 .app-container {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+    /* On la positionne pour qu'elle puisse glisser */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    
+    /* Elle attend sagement tout en bas (à 100% de la hauteur de l'écran) */
+    transform: translateY(100vh); 
+    
+    /* Exactement la même vitesse et fluidité que la landing page */
+    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--arrow-color);
+    font-size: 2rem;
+    animation: bounce 2s infinite;
+    opacity: 0.8;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+    40% { transform: translateY(-15px) translateX(-50%); }
+    60% { transform: translateY(-7px) translateX(-50%); }
+}
+
+.stats-mini-dashboard {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 30px auto;
+    max-width: 700px;
+}
+
+.stat-box {
+    flex: 1;
+    min-width: 130px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(44, 62, 80, 0.1);
+}
+
+.stat-number {
+    display: block;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #bc002d; /* Rouge dynamique */
+}
+
+.stat-legend {
+    font-size: 0.85rem;
+    color: #555;
+    font-weight: 500;
 }
 
-/* Sidebar gauche (fiche) — fermée par défaut */
-.app-sidebar-left {
-  width: 0;
-  overflow: hidden;
-  transition: width 0.5s ease;
-}
-body.fiche-mode .app-sidebar-left {
-  width: 1500px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-/* Zone carte principale */
-.app-main-map {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.5s ease;
-}
-
-/* =========================================================
-   CARTE SVG
-   ========================================================= */
-svg {
-  width: auto;
-  height: 96vh;
-  max-width: 100%;
-  overflow: hidden;
-  pointer-events: auto !important;
-  rotate: 2deg;
-}
-
-.carte-container {
-  position: absolute;
-  top: 0;
-  left: 3%;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: translate(0, 0) scale(1);
-  transform-origin: top right;
-  transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
-  z-index: 10;
-  pointer-events: none;
-}
-.carte-container.minimized   { transform: translate(17vw, 0vh) scale(0.7); z-index: 1; }
-.carte-container.ryūkyū-zoom { transform: translate(-9vw, 0vh) scale(0.8); }
-
-/* =========================================================
-   PRÉFECTURES
-   ========================================================= */
-.prefecture {
-  fill: var(--pref-fill) !important;
-  stroke: var(--pref-stroke) !important;
-  stroke-width: 0.5 !important;
-  cursor: pointer;
-  transition: fill 0.22s, stroke 0.22s;
-  vector-effect: non-scaling-stroke;
-  pointer-events: visiblePainted;
-}
-
-.prefecture:hover,
-.prefecture.illumine {
-  fill: var(--pref-hover-fill) !important;
-  stroke: var(--pref-hover-stroke) !important;
-  stroke-width: 0.5 !important;
-}
-
-.prefecture.active-prefecture {
-  fill: var(--pref-active-fill) !important;
-  stroke: var(--pref-active-stroke) !important;
-  stroke-width: 0.831188 !important;
-}
-
-.prefecture.active-prefecture:hover {
-  fill: var(--pref-hover-fill) !important;
-  cursor: pointer;
-}
-
-/* Couleurs régionales */
-.prefecture.selected[data-region="Hokkaidō"] { fill: #a0aec0 !important; stroke: #5d6672 !important; }
-.prefecture.selected[data-region="Tōhoku"]   { fill: #818cf8 !important; stroke: #364192 !important; }
-.prefecture.selected[data-region="Kantō"]    { fill: #3b82f6 !important; stroke: #174497 !important; }
-.prefecture.selected[data-region="Chūbu"]    { fill: #f59e42 !important; stroke: #8a5500 !important; }
-.prefecture.selected[data-region="Kansai"]   { fill: #f43f5e !important; stroke: #8d2033 !important; }
-.prefecture.selected[data-region="Chūgoku"]  { fill: #06b6d4 !important; stroke: #055872 !important; }
-.prefecture.selected[data-region="Shikoku"]  { fill: #ffe155 !important; stroke: #9e7a0c !important; }
-.prefecture.selected[data-region="Kyūshū"]   { fill: #e879f9 !important; stroke: #a13ba1 !important; }
-
-/* Survol sur les préfectures sélectionnées d'une région */
-.prefecture.selected[data-region="Tōhoku"]:hover,
-.prefecture.selected[data-region="Tōhoku"].illumine  { fill: #6775f8 !important; stroke: #364192 !important; stroke-width: 0.831188 !important; }
-
-.prefecture.selected[data-region="Kantō"]:hover,
-.prefecture.selected[data-region="Kantō"].illumine   { fill: #445fb9 !important; stroke: #1045a8 !important; stroke-width: 0.831188 !important; }
-
-.prefecture.selected[data-region="Chūbu"]:hover,
-.prefecture.selected[data-region="Chūbu"].illumine   { fill: #d57a1a !important; stroke: #855103 !important; stroke-width: 0.831188 !important; }
-
-.prefecture.selected[data-region="Kansai"]:hover,
-.prefecture.selected[data-region="Kansai"].illumine  { fill: #920427 !important; stroke: #8d2033 !important; stroke-width: 0.831188 !important; }
-
-.prefecture.selected[data-region="Chūgoku"]:hover,
-.prefecture.selected[data-region="Chūgoku"].illumine { fill: #188ea3 !important; stroke: #055872 !important; stroke-width: 0.831188 !important; }
-
-.prefecture.selected[data-region="Shikoku"]:hover,
-.prefecture.selected[data-region="Shikoku"].illumine { fill: #e7ca48 !important; stroke: #9e7a0c !important; stroke-width: 0.831188 !important; }
-
-.prefecture.selected[data-region="Kyūshū"]:hover,
-.prefecture.selected[data-region="Kyūshū"].illumine  { fill: #b428ca !important; stroke: #a13ba1 !important; stroke-width: 0.831188 !important; }
-
-/* Îles sélectionnées */
-.prefecture.superile-highlight       { fill: #d34a4a !important; stroke: #8A2020 !important; }
-.prefecture.superile-highlight:hover { fill: #b03030 !important; stroke: #580202 !important; stroke-width: 0.831188 !important; }
-
-/* Mode fiche : carte non-interactive */
-body.fiche-mode .prefecture {
-  cursor: default !important;
-  pointer-events: none;
-}
-
-/* Mode région : pas de zoom individuel */
-.region-svg-group.is-active-region { cursor: pointer; }
-.region-svg-group.is-active-region .prefecture:hover,
-.region-svg-group.is-active-region:hover .prefecture {
-  transform: none !important;
-  transition: none !important;
-}
-
-/* =========================================================
-   COUCHE Ryūkyū
-   ========================================================= */
-.ryūkyū-layer {
-  position: fixed;
-  top: 110%;
-  left: 27%;
-  width: 200px;
-  height: auto;
-  transform: translate(-50%, -50%) scale(1.5);
-  opacity: 1;
-  pointer-events: auto;
-  transition: opacity 0.45s ease;
-  z-index: 9999;
-  contain: layout;
-}
-
-/* =========================================================
-   ÉTIQUETTE AU SURVOL
-   ========================================================= */
-#prefecture-hover-label {
-  font-family: 'Tsukuhoucustom', serif;
-  position: fixed;
-  bottom: 30px;
-  left: 51%;
-  transform: translateX(-50%);
-  font-size: 2.4rem;
-  font-weight: bold;
-  color: var(--label-text);
-  
-  padding: 10px 20px;
-  border-radius: 12px;
-  pointer-events: none;
-  z-index: 1005;
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-
-/* =========================================================
-   NAVBAR (Recherche + Toggle)
-   ========================================================= */
-.navbar {
-  position: fixed;
-  top: 25px;
-  left: 50%;
-  transform: translate(-50%, 0);
-  z-index: 11;
-  background: var(--nav-bg);
-  border: var(--nav-border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 8px 16px 8px 20px;
-  border-radius: 50px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  transition: transform 0.6s cubic-bezier(0.23,1,0.32,1), opacity 0.4s ease, visibility 0.6s;
-}
-body.fiche-mode .navbar {
-  transform: translate(-50%, -100px);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.nav-separator {
-  width: 1px;
-  height: 24px;
-  background-color: var(--text);
-  opacity: 0.15;
-  border-radius: 2px;
-}
-
-/* Boutons îles/régions (animations legacy conservées) */
-.navbar, .boutons-iles, .boutons-regions {
-  transition: transform 0.6s cubic-bezier(0.19,1,0.22,1), opacity 0.9s ease;
-  opacity: 1;
-  pointer-events: auto;
-}
-body.fiche-mode .boutons-iles,
-body.fiche-mode .boutons-regions {
-  transform: translateX(100px);
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* =========================================================
-   BARRE DE RECHERCHE
-   ========================================================= */
-.search-group {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
-
-.search-icon {
-  fill: var(--search-icon);
-  width: 1.2rem;
-  height: 1.2rem;
-  position: absolute;
-  left: 0;
-  pointer-events: none;
-  transition: fill 0.3s ease;
-}
-
-.search-input {
-  font-family: 'Funnelsans', sans-serif;
-  height: 36px;
-  width: 150px;
-  padding: 0 10px 0 32px;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: var(--search-input-color);
-  font-size: 1.05rem;
-  font-weight: 500;
-  transition: width 0.4s cubic-bezier(0.23,1,0.32,1);
-}
-.navbar:hover .search-input,
-.search-input:focus { width: 230px; }
-
-.search-input::placeholder { color: var(--search-input-color); opacity: 0.5; font-weight: 400; }
-.search-input:focus ~ .search-icon { fill: var(--pref-fill); }
-.search-input::-webkit-search-cancel-button { -webkit-appearance: none; }
-
-/* Suggestions */
-.search-suggestions {
-  position: absolute;
-  top: 100%;
-  left: 20px;
-  width: 200px;
-  margin-top: 15px;
-  background: var(--nav-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: var(--btn-border);
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  list-style: none;
-  padding: 0;
-  max-height: 250px;
-  overflow-y: auto;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-  transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
-  z-index: 2001;
-}
-.search-suggestions.active { opacity: 1; visibility: visible; transform: translateY(0); }
-
-.search-suggestions::-webkit-scrollbar       { width: 6px; }
-.search-suggestions::-webkit-scrollbar-thumb { background: rgba(128,128,128,0.3); border-radius: 10px; }
-
-.suggestion-item {
-  padding: 12px 20px;
-  font-family: 'Funnelsans', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--sugg-text);
-  cursor: pointer;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-  transition: background 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-body.dark-theme .suggestion-item { border-bottom: 1px solid rgba(255,255,255,0.05); }
-.suggestion-item:last-child       { border-bottom: none; }
-.suggestion-item:hover,
-.suggestion-item.keyboard-focus   { background: var(--sugg-hover-bg); color: var(--sugg-text); padding-left: 25px; }
-
-.sugg-flag {
-  width: 24px;
-  height: auto;
-  border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-  flex-shrink: 0;
-}
-
-/* =========================================================
-   TOGGLE THÈME SOMBRE
-   ========================================================= */
-.theme-toggle-container {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 4px;
-}
-.theme-toggle-input { display: none; }
-
-.theme-toggle-slider {
-  position: relative;
-  width: 44px;
-  height: 24px;
-  background-color: #d1d5db;
-  border-radius: 30px;
-  transition: background-color 0.4s ease;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-}
-body.dark-theme .theme-toggle-slider { background-color: #4b5563; }
-
-.theme-toggle-slider::after {
-  content: "";
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 18px;
-  height: 18px;
-  background-color: #ffffff;
-  border-radius: 50%;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
-}
-.theme-toggle-input:checked + .theme-toggle-slider::after { transform: translateX(20px); }
-
-/* =========================================================
-   DOCK LATÉRAL DROIT
-   ========================================================= */
-.dock-navigation-carte {
-  position: fixed;
-  right: 30px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 50;
-  background: var(--btn-bg-box);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 25px 20px;
-  border-radius: 20px;
-  box-shadow: var(--nav-shadow);
-  border: var(--btn-border);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  pointer-events: auto;
-  transition: transform 0.6s cubic-bezier(0.2,0,0.2,1), opacity 0.4s ease;
-}
-body.fiche-mode .dock-navigation-carte {
-  transform: translateY(-50%) translateX(150px);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.dock-section { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
-
-.dock-titre {
-  font-family: 'Funnelsans', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 800;
-  color: var(--btn-text);
-  letter-spacing: 3px;
-  margin-bottom: 5px;
-  opacity: 0.6;
-}
-
-.dock-separateur {
-  height: 1px;
-  width: 100%;
-  background: var(--btn-text);
-  opacity: 0.1;
-  border-radius: 5px;
-}
-
-.dock-btn {
-  font-family: 'Funnelsans', sans-serif;
-  font-size: 1.05rem;
-  font-weight: 500;
-  color: var(--btn-text);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: all 0.2s ease;
-  position: relative;
-}
-.dock-btn:hover { background: var(--btn-hover-bg); color: var(--text); transform: translateX(-5px); }
-.dock-btn.active {
-  font-weight: 500;
-  color: var(--btn-text);
-  background: var(--btn-active-bg);
-  box-shadow: inset 3px 0 0 var(--btn-shadow-2);
-}
-
-.couleur-pastille {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-  opacity: 0.5;
-  transition: all 0.3s ease;
-}
-.dock-btn:hover .couleur-pastille,
-.dock-btn.active .couleur-pastille { opacity: 1; transform: scale(1.3); box-shadow: 0 0 2px currentColor; }
-
-/* =========================================================
-   BARRE NAVIGATION PRÉFECTURES (pillule météo centrée)
-   ========================================================= */
-.fiche-navbar {
-  position: fixed;
-  top: 22px;
-  left: 50%;
-  transform: translate(-50%, -120px);
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 0.55s cubic-bezier(0.2,0,0.2,1), opacity 0.55s ease;
-}
-body.fiche-mode:not(.region-active-mode) .fiche-navbar {
-  transform: translate(-50%, 0);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* =========================================================
-   FICHE DÉTAIL
-   ========================================================= */
-#ficheDetail {
-  box-sizing: border-box;
-  position: relative;
-  width: 100%;
-  max-width: 650px;
-  min-height: 100vh;
-  margin: 0 auto 0 0;
-  padding: 40px 20px 100px 80px;
-  opacity: 0;
-  display: none;
-  z-index: 50;
-  pointer-events: none;
-  text-align: left;
-  transition: opacity 0.4s ease;
-}
-body.fiche-mode #ficheDetail { display: block; opacity: 1; pointer-events: auto; }
-
-#ficheDetail h1 {
-  font-family: 'Tsukuhoucustom', serif;
-  font-size: 6rem;
-  margin-top: 50px;
-  text-align: left;
-  color: var(--text);
-  letter-spacing: 1px;
-  white-space: nowrap;
-  flex-shrink: 1;
-}
-#ficheDetail p {
-  font-size: 1.2rem;
-  color: var(--text-muted);
-  line-height: 1.7em;
-}
-
-/* Zone navigation en haut de la fiche */
-.navigation-fiche {
-  width: 100%;
-  text-align: left;
-  margin-bottom: 10px;
-}
-
-#entete-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  max-width: 650px;
-  margin: 30px 0;
-}
-
-.titre-drapeau-centre {
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-#prefecture-drapeau {
-  height: 75px !important;
-  width: auto !important;
-  flex-shrink: 0 !important;
-  display: none;
-  border-radius: 4px;
-  box-shadow: var(--flag-shadow);
-  border: var(--flag-border);
-}
-
-/* =========================================================
-   BOUTON RETOUR CARTE
-   ========================================================= */
-#retourCarte {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  outline: none;
-  border: 0;
-  vertical-align: middle;
-  text-decoration: none;
-  background: transparent;
-  padding: 0;
-  font-family: inherit;
-  width: 10rem;
-  height: auto;
-  margin-bottom: 20px;
-}
-
-#retourCarte .circle {
-  transition: all 0.45s cubic-bezier(0.65,0,0.076,1);
-  position: relative;
-  display: block;
-  margin: 0;
-  width: 3rem;
-  height: 3rem;
-  background: var(--retour-circle);
-  border-radius: 1.625rem;
-}
-
-#retourCarte .circle .icon {
-  transition: all 0.45s cubic-bezier(0.65,0,0.076,1);
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  background: var(--retour-arrow);
-}
-
-#retourCarte .circle .icon.arrow {
-  left: 1.2rem;
-  width: 1.125rem;
-  height: 0.125rem;
-  background: none;
-}
-
-#retourCarte .circle .icon.arrow::before {
-  position: absolute;
-  content: "";
-  top: -0.29rem;
-  left: 0.0625rem;
-  width: 0.625rem;
-  height: 0.625rem;
-  border-bottom: 0.125rem solid var(--retour-arrow);
-  border-left: 0.125rem solid var(--retour-arrow);
-  transform: rotate(45deg);
-}
-
-#retourCarte .button-text {
-  transition: all 0.45s cubic-bezier(0.65,0,0.076,1);
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  padding: 0.75rem 0;
-  margin: 0 0 0 1.85rem;
-  color: var(--retour-text);
-  font-weight: 700;
-  line-height: 1.6;
-  text-align: center;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  opacity: 0;
-  transform: translateX(10px);
-}
-
-#retourCarte:hover .circle             { width: 100%; background: var(--retour-circle-hover); }
-#retourCarte:hover .circle .icon.arrow { background: var(--retour-arrow); transform: translate(-0.5rem, 0); }
-#retourCarte:hover .button-text        { opacity: 1; transform: translateX(0); color: var(--retour-text); transition-delay: 0.1s; }
-
-/* Animation d'entrée en mode fiche */
-@keyframes dropFromLeft {
-  from { opacity: 0; transform: translateX(-50px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-body.fiche-mode #retourCarte {
-  animation: dropFromLeft 0.8s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
-}
-
-/* =========================================================
-   STATISTIQUES
-   ========================================================= */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
-  margin: 30px 0;
-  padding: 20px;
-  background: var(--card-bg);
-  border-radius: 15px;
-  border: 1px solid var(--btn-border);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  transition: background 0.3s ease, border-color 0.3s ease;
-}
 
-.stat-item  { display: flex; flex-direction: column; gap: 5px; }
-
-.stat-label {
-  font-family: 'Funnelsans', sans-serif;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--text-muted);
-  font-weight: 700;
-  opacity: 0.8;
-}
-
-.stat-value {
-  font-family: 'Funnelsans', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: var(--text);
-  transition: color 0.3s ease;
-}
-
-/* =========================================================
-   ANIMATIONS D'ENTRÉE (mode fiche)
-   ========================================================= */
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-body.fiche-mode #ficheTitre,
-body.fiche-mode #prefecture-drapeau,
-body.fiche-mode .stats-grid,
-body.fiche-mode #ficheTexte,
-body.fiche-mode #svgPortrait,
-body.fiche-mode .nav-fiche-container {
-  opacity: 0;
-  animation: slideUp 0.6s ease forwards;
-}
-body.fiche-mode .nav-fiche-container { animation-delay: 0.1s; }
-body.fiche-mode #ficheTitre          { animation-delay: 0.2s; }
-body.fiche-mode #prefecture-drapeau  { animation-delay: 0.2s; }
-body.fiche-mode .stats-grid          { animation-delay: 0.4s; }
-body.fiche-mode #ficheTexte          { animation-delay: 0.4s; }
-
-/* Transition entre fiches */
-.fiche-transition-out {
-  animation: fadeOutDown 0.2s ease forwards !important;
-}
-@keyframes fadeOutDown {
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(15px); }
-}
-
-/* Éléments cachés hors mode fiche */
-body:not(.fiche-mode) #pref-portrait-container,
-body:not(.fiche-mode) #svgPortrait { display: none; }
-
-/* =========================================================
-   SLOT MACHINE (compteur animé)
-   ========================================================= */
-.slot-machine {
-  display: inline-flex;
-  overflow: hidden;
-  line-height: 1.5rem;
-  height: 1.5rem;
-  font-variant-numeric: tabular-nums;
-}
-.slot-column  { display: flex; flex-direction: column; transition: transform 1.2s cubic-bezier(0.45,0.05,0.55,0.95); }
-.slot-digit   { height: 1.5rem; display: flex; justify-content: center; align-items: center; }
-.slot-separator { margin: 0 2px; }
-
-/* =========================================================
-   ANIMATION DÉSELECTION PRÉFECTURE
-   ========================================================= */
-@keyframes prefDeselect {
-  0%   { fill: var(--pref-active-fill); }
-  45%  { fill: var(--pref-hover-fill);  }
-  100% { fill: var(--pref-fill);        }
-}
-.prefecture.deselecting {
-  animation: prefDeselect 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
-  stroke-width: 0.5 !important;
-}
-
-/* =========================================================
-   BOUTONS PRÉCÉDENT / SUIVANT — état désactivé (conservé pour compatibilité)
-   ========================================================= */
-
-/* =========================================================
-   BLOC VILLES PRINCIPALES
-   ========================================================= */
-.villes-bloc {
-  padding: 16px 20px;
-  background: var(--card-bg);
-  border-radius: 15px;
-  border: 1px solid var(--btn-border);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  margin: 0 0 24px 0;
-  transition: background 0.3s ease, border-color 0.3s ease;
-}
-
-.villes-liste {
-  list-style: none;
-  margin: 10px 0 0 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.ville-item {
-  font-family: 'Funnelsans', sans-serif;
-  font-size: 1.05rem;
-  font-weight: 500;
-  color: var(--text);
-  padding: 4px 0;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-  transition: color 0.3s ease;
-}
-body.dark-theme .ville-item   { border-bottom: 1px solid rgba(255,255,255,0.05); }
-.ville-item:last-child        { border-bottom: none; }
-
-/* Animation d'entrée en mode fiche */
-body.fiche-mode .villes-bloc {
-  opacity: 0;
-  animation: slideUp 0.6s ease forwards;
-  animation-delay: 0.5s;
-}
-
-/* Animation lors de la transition entre fiches */
-.fiche-transition-out.villes-bloc,
-#ficheVillesBloc.fiche-transition-out {
-  animation: fadeOutDown 0.2s ease forwards !important;
-}
-
-
-
-/* =========================================================
-   WIDGET HEURE LOCALE JAPON (mode normal, au-dessus du dock)
-   ========================================================= */
-.heure-japon-widget {
-  position: fixed;
-  right: 30px;
-  top: 20px;
-  z-index: 100;
-  background: var(--heure-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: var(--heure-border);
-  border-radius: 20px;
-  padding: 10px 18px;
-  box-shadow: var(--nav-shadow);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  font-family: 'Funnelsans', sans-serif;
-  pointer-events: none;
-  transition: opacity 0.5s cubic-bezier(0.2,0,0.2,1),
-              transform 0.5s cubic-bezier(0.2,0,0.2,1);
-}
-
-.heure-japon-label {
-  font-size: 1rem;
-  font-weight: 800;
-  letter-spacing: 3px;
-  color: var(--texte-heure);
-  text-transform: uppercase;
-  opacity: 0.7;
-}
-
-#heureJapon {
-  font-size: 1.50rem;
-  font-weight: 600;
-  color: var(--text);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 1.5px;
-}
-
-/* Cache le widget heure en mode fiche */
-body.fiche-mode .heure-japon-widget {
-  opacity: 0;
-  transform: translateX(80px);
-  pointer-events: none;
-}
-
-
-
-/* =========================================================
-   GALERIE MODAL (Fenêtre plein écran)
-   ========================================================= */
-.gallery-modal {
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(30, 44, 43, 0.4); /* Fond assombri */
-  backdrop-filter: blur(15px); /* L'effet verre poli */
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-}
-
-/* Classe pour afficher la galerie */
-.gallery-modal.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.gallery-content {
-  background: var(--background-gallery);
-  width: 85%;
-  max-width: 1200px;
-  max-height: 85vh;
-  border-radius: 20px;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-}
-
-.gallery-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  color: var(--text);
-}
-
-.close-btn {
-  background: none; border: none; font-size: 2.5rem; cursor: pointer; color: var(--text);
-}
-
-/* =========================================================
-   LA GRILLE ET LES CARTES
-   ========================================================= */
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 cartes par ligne ! */
-  gap: 20px;
-  overflow-y: auto; /* Permet de scroller dans la fenêtre */
-  padding-right: 10px;
-}
-
-.gallery-card {
-  background: var(--btn-bg-box);
-  border-radius: 15px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.gallery-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 2px 6px 10px #0001;
-}
-
-.gallery-flag {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  margin-bottom: 15px;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
-}
-
-.gallery-name { font-size: 1.3rem; font-weight: bold; color: var(--text); margin-bottom: 5px; }
-.gallery-pop { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; }
-
-.gallery-btn {
-  padding: 8px 15px;
-  background: var(--pref-fill);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s;
-  width: 100%;
-}
-
-.gallery-btn:hover { background: var(--pref-active-fill); }
-
-/* Responsive : On adapte selon la taille de l'écran */
-@media (max-width: 1000px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 768px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 480px) { .gallery-grid { grid-template-columns: 1fr; } }
-
-
-/* =========================================================
-   BOUTON VOIR TOUT (Mouvement Mécanique)
-   ========================================================= */
-
-.gallery-open-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: 0;
-  color: var(--text);
-  font-weight: bold;
-  font-size: 0.8rem;
-  transition: color 0.3s ease;
-}
-
-/* La taille globale du SVG */
-.icon-dossier {
-  width: 32px; /* Ajuste pour la navbar (28px ou 35px) */
-  height: auto;
-  transform: rotate(-2deg);
-  overflow: hidden; 
-}
-
-/* --- LE MOTEUR DE L'ANIMATION --- */
-
-.feuille {
-  /* Un effet fluide avec un très léger rebond */
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.dossier-avant {
-  transform-origin: bottom center;
-  transition: transform 0.4s ease;
-}
-
-/* 1. L'ÉTAT PAR DÉFAUT (Fermé) */
-/* Quand on NE survole PAS le dossier, on pousse les feuilles vers le bas */
-/* Elles vont se cacher derrière la pochette bleue */
-.icon-dossier:not(:hover) .feuille-1 { transform: translateY(55px); }
-.icon-dossier:not(:hover) .feuille-2 { transform: translateY(45px); }
-.icon-dossier:not(:hover) .feuille-3 { transform: translateY(50px); }
-
-/* 2. L'ÉTAT AU SURVOL (Ouvert) */
-/* Les feuilles remontent à la position que tu as dessinée sur Figma */
-.gallery-open-btn:hover .feuille-1,
-.gallery-open-btn:hover .feuille-2,
-.gallery-open-btn:hover .feuille-3 {
-  transform: translateY(0);
-}
-
-/* Le clapet s'entrouvre légèrement pour laisser passer les feuilles */
-.gallery-open-btn:hover .dossier-avant {
-  transform: scaleY(0.96) translateY(2px);
-}
-
-/* Le texte change de couleur (Optionnel) */
-.gallery-open-btn:hover {
-  color: var(--pref-active-fill);
-}
-
-/* =========================================================
-   COULEURS DU DOSSIER (Mode Clair / Mode Sombre)
-   ========================================================= */
-
-/* Par défaut (Mode Clair) : Dossier Jaune */
-.dossier-arriere {
-  fill: #eab308; /* Un beau jaune doré pour le fond */
-  transition: fill 0.4s ease;
-}
-
-.dossier-avant-path {
-  fill: #fde047; /* Un jaune un peu plus vif et clair pour l'avant */
-  transition: fill 0.4s ease;
-}
-
-/* En Mode Sombre : Dossier Bleu (Les couleurs de ton Figma) */
-body.dark-theme .dossier-arriere {
-  fill: #2877B0;
-}
-
-body.dark-theme .dossier-avant-path {
-  fill: #75AFD8;
-}
-
-/* =========================================================
-   ANIMATION AJUSTÉE (Les feuilles ne dépassent plus en bas)
-   ========================================================= */
-
-/* On réduit fortement le translateY. 20px suffisent pour cacher
-   le haut des feuilles derrière le clapet bleu sans percer le fond ! */
-.icon-dossier:not(:hover) .feuille-1 { transform: translateY(20px); }
-.icon-dossier:not(:hover) .feuille-2 { transform: translateY(15px); }
-.icon-dossier:not(:hover) .feuille-3 { transform: translateY(18px); }
-
-.gallery-open-btn:hover .feuille-1,
-.gallery-open-btn:hover .feuille-2,
-.gallery-open-btn:hover .feuille-3 {
-  transform: translateY(0);
-}
-
-.gallery-open-btn:hover .dossier-avant {
-  transform: scaleY(0.96) translateY(2px);
-}
-
-/* =========================================================
-   FILTRES DE LA GALERIE
-   ========================================================= */
-.gallery-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  color: var(--text);
-  flex-wrap: wrap; /* Permet aux éléments de passer à la ligne sur petit écran */
-  gap: 15px;
-}
-
-.gallery-filters {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.filter-select {
-  background: var(--btn-bg-box);
-  color: var(--text);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 10px 15px;
-  border-radius: 10px;
-  font-family: inherit;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-.filter-select:hover, .filter-select:focus {
-  border-color: var(--pref-active-fill);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-body.dark-theme .filter-select {
-  background: rgba(0, 0, 0, 0.3);
-  color: #fff;
-}
-
-body.dark-theme .filter-select option {
-  background: #1e2c2b; /* Empêche les options d'être transparentes et illisibles */
-  color: #fff;
-}
